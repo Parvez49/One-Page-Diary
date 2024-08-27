@@ -1,0 +1,78 @@
+
+#Text
+# This configuration for two secure domain setup using apache and certbot.
+
+
+# To uninstall apache2 and certbot
+$ sudo systemctl stop apache2
+$ sudo apt-get remove --purge apache2 apache2-utils apache2-bin apache2.2-common
+$ sudo rm -rf /etc/apache2
+
+$ sudo apt-get remove --purge certbot python3-certbot-nginx python3-certbot-apache
+$ sudo rm -rf /etc/letsencrypt    # Certifications directory
+$ sudo apt-get autoremove
+$ sudo apt-get clean
+
+
+# Certbot installs and Configurations
+# The following command for first domain configuration settings.
+$ sudo certbot --apache
+
+
+
+
+
+
+# Second Domain ssl certificate and configuration.
+$ sudo certbot --apache -d api.love.merchantbay.com
+
+$ sudo nano /etc/apache2/sites-available/api.love.merchantbay.com.conf
+<VirtualHost *:80>
+    ServerName api.love.merchantbay.com
+    Redirect permanent / https://api.love.merchantbay.com/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName api.love.merchantbay.com
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/api.love.merchantbay.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/api.love.merchantbay.com/privkey.pem
+
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:8000/
+    ProxyPassReverse / http://localhost:8000/
+</VirtualHost>
+
+
+# Enable the Necessary Apache Modules
+$ sudo a2enmod ssl
+$ sudo a2enmod proxy
+$ sudo a2enmod proxy_http
+
+
+# Enable the New Site Configuration
+$ sudo a2ensite api.love.merchantbay.com.conf
+$ sudo systemctl restart apache2
+
+
+# Restart Apache
+$ sudo systemctl restart apache2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
