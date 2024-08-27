@@ -1,0 +1,49 @@
+
+
+
+
+
+$ ls -p | grep -v / | wc -l      // only file count without .file
+
+$ ls -p | grep / | wc -l         // only folder count without .folder
+
+// To measure file or folder size
+For Files:
+
+$ ls -l <file>      : This command will list the file along with its size in bytes.
+$ du -h <file>      : This command will display the size of the file in a human-readable format (e.g., KB, MB, GB).
+
+For Folders:
+
+$ du -sh <folder>       : This command will display the size of the folder and its contents in a human-readable format.
+$ du -sh <folder>/*     : This command will display the size of each item in the folder separately.
+
+// Checking OS 
+$ uname -a 
+$ lsb_release -a
+$ cat /etc/os-release
+
+
+// permission issue
+$ sudo mkdir -m 777 <folder_name>
+
+$ sudo bash -c "$(curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

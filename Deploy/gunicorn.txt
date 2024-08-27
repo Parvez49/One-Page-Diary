@@ -1,0 +1,24 @@
+pip install gunicorn
+
+gunicorn_config.py
+
+	workers = 3  # Adjust based on your server's resources
+	bind = "0.0.0.0:8000"
+
+# terminal command for gunicorn
+gunicorn your_project_name.wsgi:application -c gunicorn_config.py
+
+# to automatically reload when your code changes, you can add the --reload option
+gunicorn your_project_name.wsgi:application -c gunicorn_config.py --reload
+
+
+
+$ pgrep gunicorn  // to show gunicorn process -> it show process id: 550255
+
+$ kill 550255     // to kill process
+
+
+$ ps -A | grep gunicorn    // to search gunicorn process id
+
+
+

@@ -1,0 +1,26 @@
+####clear screen: cls
+
+--------Folder and file control-----------
+####go to specific directory: cd (directory) ex:cd desktop
+####show directory file: dir
+####show directory file with hidden file:dir/a
+####to show folder and file: tree
+####make folder: mkdir (folder name) ex.mkdir new
+####delete folder: rmdir (filder name) ex:rmdir new
+####make file: echo >(file name) ex: echo a.txt
+####open file name:file name ex: a.txt
+####read file on cmd : type a.txt
+####delete file: del a.txt
+####delete folder with own file: rmdir /s new
+####go to back folder: cd ..
+####auto folder select: cd (tab press)
+####go to desktop immediately: ../..
+
+####copy file to file:copy a.txt b.txt
+#### move a.txt b.txt (same for filder move)
+
+
+####to show drive: wmic logicaldisk get name
+
+run c program:  //install gcc compiler before c program run using cmd prompt
+	:gcc -o hello hello.c  //here hello name used for creating hello.exe file

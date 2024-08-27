@@ -1,0 +1,68 @@
+
+
+import numpy as np 
+
+arr = np.array([1, 2, 3, 4, 5]) 
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])  // two dimensional array
+
+arr = np.array([[[1, 2, 3], [4, 5, 6]], [[1, 2, 3], [4, 5, 6]]])   // three dimensional array
+
+print(arr.ndim)      // checking dimension
+
+print(arr.shape      // check shape 
+
+arr = np.array([1, 2, 3, 4], ndmin=5) // to create specific dimension array
+
+
+
+ arr = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+
+for x in np.nditer(arr):
+  print(x)           // iterating through each scalar of an array
+  
+  
+for idx, x in np.ndenumerate(arr):
+print(idx, x)      // (0, 0,1) 2
+  
+arr = np.concatenate((arr1, arr2), axis=1)
+
+x = np.where(arr == 4)  // to find index number of all 4 in arr
+
+print(np.sort(arr)) 
+
+# ------------------ Random Number in Numpy ------------------
+from numpy import random
+
+x = random.randint(100)
+x = random.rand()       // Generate a random float from 0 to 1:
+x=random.randint(100, size=(5))  // 1-D array containing 5 random integers from 0 to 100:
+
+x = random.choice([3, 5, 7, 9], p=[0.1, 0.3, 0.6, 0.0], size=(100))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

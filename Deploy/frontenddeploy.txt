@@ -1,0 +1,39 @@
+
+
+# located in package.json
+
+$ yarn 
+$ yarn run build
+
+
+$ rm -r /var/www/html/*
+
+$ mv build/* /var/www/html/
+
+# https://tecadmin.net/solving-react-404-error/
+# https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/
+
+/etc/apache2/sites-available/000-default.conf
+	<Directory /var/www/html>
+    		Options Indexes FollowSymLinks
+    		AllowOverride All
+    		Require all granted
+	</Directory>
+
+
+.htaccess  in /var/www/html/
+   <IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteRule ^index\.html$ - [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+	RewriteRule . /index.html [L]
+    </IfModule>
+    
+# Enable Apache2 Module:
+  
+    
+
+    

@@ -1,0 +1,378 @@
+implementation 'com.google.firebase:firebase-firestore'//----------firestore dependency----------
+private static final String TAG ="MainActivity";
+//Connect Android Studio to Firestore- Guide
+https://firebase.google.com/docs/firestore/quickstart#android
+
+
+package com.example.firestore;
+
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainActivity extends AppCompatActivity {
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Map<String, Object> user = new HashMap<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+//add information into cloud firestore using documents on collection
+ Map<String, Object> city = new HashMap<>();
+        city.put("name", "Los Angeles");
+        city.put("state", "CA");
+        city.put("country", "USA");
+
+        db.collection("cities").document("LA")
+                .set(city)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+//----------------Update firestore data-----------------------------------------
+	DocumentReference uRef = db.collection("Collection").document("DC");
+        uRef.update("last","PS");
+
+//----------------Adding Document next time 
+CollectionReference cities = db.collection("Collection");
+Map<String, Object> data1 = new HashMap<>();
+data1.put("name", "San Francisco");
+data1.put("state", "CA");
+data1.put("country", "USA");
+data1.put("capital", false);
+data1.put("population", 860000);
+data1.put("regions", Arrays.asList("west_coast", "norcal"));
+cities.document("SF").set(data1);
+
+//Delete firestore document
+db.collection("Collection_name").document("Document_name")
+        .delete();
+
+//----------------Retrieving all Document data from firestore--------------------------------------------
+db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String str="";
+                            String id="";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                id=document.getId();//for showing document id
+                                str+=document.getString("last");
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                            tv.setText(id);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+//----------------Retrieving Document data from firestore----------------------------------
+FirebaseFirestore db= FirebaseFirestore.getInstance();
+DocumentReference docRef = db.collection("cities").document("SF");
+docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    @Override
+    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if (task.isSuccessful()) {
+            DocumentSnapshot document = task.getResult();
+            if (document.exists()) {
+                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+            } else {
+                Log.d(TAG, "No such document");
+            }
+        } else {
+            Log.d(TAG, "get failed with ", task.getException());
+        }
+    }
+});
+    }
+}
+
+//-------------------Retrieving Document map data from firestore------------------------------
+DocumentReference docRef = db.collection("users").document("frank");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Map<String, Map<String, Object>>temp=new HashMap<>();
+                        Map<String, Object>temp2=new HashMap<>();
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map<String, Object> st=document.getData();
+                                Map<String, Object> st5= (Map<String, Object>) document.get("Name");
+                                //ok//String str=st.get("Name").toString();
+                                //st.get("Name").getClass();
+                                Toast.makeText(getApplicationContext(),st5.get("last").toString(),Toast.LENGTH_SHORT).show();
+                                //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            } else {
+                                //Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            //Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+//-------------------User Authentication Register and logged in-----------------------------
+ ------------------create user using gmail verification----------------------------------------
+    mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            mAuth.getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                tv.setText("email send");
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        }
+                    }
+                });
+    -----------------sign in after gmail verified-------------------------------------------------------
+    mAuth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            if(mAuth.getCurrentUser().isEmailVerified()){
+                                tv.setText("verified");
+                            }
+                            else {
+                                tv.setText("not verified");
+                            }
+                        }
+                    }
+                });
+\------------------------Reset password--------------------------------
+     String email="parvezhossen81@gmail.com";
+        String password="654321";
+     mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            Log.d(TAG, "Email sent.");
+                        }
+                    }
+                });
+    --------------------------------------------------------------------------
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+        tv.setText("signed in");
+    } else {
+        // No user is signed in
+        tv.setText("not signed in");
+    } 
+
+
+//----------------------------------------------------------------------------
+//-----------------------OTP--------------------------------------------------
+private String mVerificationId;
+private PhoneAuthProvider.ForceResendingToken mResendToken;
+private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks
+
+//---------following written in onCreate method-------------------------------
+String phoneNum = "+8801705651757";
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
+                .setPhoneNumber(phoneNum)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onCodeSent(String verificationId,
+                                           PhoneAuthProvider.ForceResendingToken token) {
+                        mVerificationId = verificationId;
+                        //mResendToken = token;
+                        btn=findViewById(R.id.button);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ed=findViewById(R.id.editTextTextPersonName);
+                                String code=ed.getText().toString();
+
+                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+                                signInWithPhoneAuthCredential(credential);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        // ...
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+//---------------------------------------------------------------------------------
+private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            tv.setText("success");
+                        } else {
+                            tv.setText("invalid otp");
+                        }
+                    }
+                });
+    }
+
+
+//-----------------Upload Image to Firebase and retrive to android studio---------------------
+implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
+public class MainActivity extends AppCompatActivity {
+
+    // One Button
+    Button BSelectImage;
+    TextView tv;
+    // One Preview Image
+    ImageView IVPreviewImage;
+    public Uri imageUri;
+
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReferencere;
+
+    // constant to compare
+    // the activity result code
+    int SELECT_PICTURE = 200;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // register the UI widgets with their appropriate IDs
+        BSelectImage = findViewById(R.id.BSelectImage);
+        IVPreviewImage = findViewById(R.id.IVPreviewImage);
+        tv=findViewById(R.id.textView);
+        // handle the Choose Image button to trigger
+        // the image chooser function
+
+        firebaseStorage=FirebaseStorage.getInstance();
+        storageReferencere=firebaseStorage.getReference();
+
+        BSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooser();
+            }
+        });
+    }
+
+    // this function is triggered when
+    // the Select Image Button is clicked
+    void imageChooser() {
+
+        // create an instance of the
+        // intent of the type image
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
+
+    // this function is triggered when user
+    // selects the image from the imageChooser
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+                    // update the preview image in the layout
+                    //IVPreviewImage.setImageURI(selectedImageUri);
+                    imageUri=data.getData();
+                    //uploadImage();
+                    StorageReference stReference=storageReferencere.child("imageee/");
+                    stReference.putFile(imageUri)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    //
+                                }
+                            });
+
+                    StorageReference storageReference2=storageReferencere.child("imageee");
+                    storageReference2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(MainActivity.this)
+                                    .load(uri)
+                                    .error(R.drawable.ic_launcher_background)
+                                    .into(IVPreviewImage);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            tv.setText("image not found");
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+
+/*

@@ -1,0 +1,30 @@
+
+
+# ngrok install from ngrok website
+
+ngrok http 80   // by this, we only access a single port in free account
+
+
+port forwanding method:
+
+$ ngrok config check  // this command find ngrok.yml file
+
+# update ngrok.yml file:
+  	version: "2"
+	authtoken: 2EoFKM3WsHmsf3g2YPB8mf3CSdj_465p97uTnEd1zYTL5bUyY
+
+	tunnels:
+	  first:
+	    addr: 8001
+	    proto: http
+	  second:
+	    addr: 8002
+	    proto: http
+	  third:
+	    addr: 8003
+	    proto: http
+	    
+ $ ngrok start --all   // after configuring ngrok.yml file
+
+
+

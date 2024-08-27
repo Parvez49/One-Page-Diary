@@ -1,0 +1,6 @@
+
+
+sudo apt install net-tools
+
+# ifconfig   // to ip address
+

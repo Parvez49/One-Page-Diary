@@ -1,0 +1,178 @@
+
+JavaScript: 
+
+    variable: x = 5; z = x + y; var x = 5; let x = 5; const x = 5; // Only use let if you can't use const. Only use var if you MUST support old browsers.
+# let carName; --> undefined
+# Variables declared with the var always have Global Scope. var can be redeclared.
+# let and const keywords provided Block Scope in JavaScript. let,const can not be redeclared.
+# Object, Array: change the elements of a constant array
+const cars = ["Saab", "Volvo", "BMW"]; // It does not define a constant value. It defines a constant reference to a value. Change the elements, property of constant array, object.
+{
+let x = 2;     // Allowed
+const x = 2;   // Not allowed
+}
+
+    Operators: 
+# == equal to
+# === equal value and equal type
+    Object:
+Object, Array, Date
+
+     Numbers:
+JavaScript does not define different types of numbers, like integers, short, long, floating-point etc. Always 64-bit Floating Point, This format stores numbers in 64 bits, where the number (the fraction) is stored in bits 0 to 51, the exponent in bits 52 to 62, and the sign in bit 63.
+
+# The Number.isInteger(), isSafeInteger() method returns true if the argument is an integer, safe integer.
+# let x = Number.MAX_SAFE_INTEGER, MIN_SAFE_INTEGER;
+# convert a variable to a number: Number(), parseFloat(), parseInt().
+# methods: Number.MAX_VALUE, Number.MIN_VALUE, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, Number.POSITIVE_INFINITY (1 / 0), Number.NEGATIVE_INFINITY (-1 / 0).
+
+NaN - Not a Number
+JavaScript integers are only accurate up to 15 digits. let x = 1234567890123456789012345n;
+
+# Comparing two JavaScript objects always returns false.
+
+      Arrays:
+# It is a common practice to declare arrays with the const keyword.
+# const cars = [];, const cars = new Array("Saab", "Volvo", "BMW");
+# Arrays are a special type of objects. The typeof operator in JavaScript returns "object" for arrays. Arrays with named indexes are called associative arrays (or hashes). JavaScript does not support arrays with named indexes. In JavaScript, arrays always use numbered indexes.  
+# Array Methods: const fruits = ["Banana", "Orange", "Apple", "Mango"]; 
+	fruits.length; fruits.toString(); fruits.at(2); fruits.join(" * "); fruits.push("Kiwi"); fruits.splice(2, 0, "Lemon", "Kiwi")(index, number of elements removed, value...);, fruits.slice(3)(start to end);, fruits.slice(1, 3)(start,up to); fruits.indexOf("Apple")(returns -1 if the item is not found.);
+	
+# myArr.flat();
+# Array concatenation: arr1.concat(arr2) return new array;
+
+# By combining sort() and reverse(), sort an array in descending order.
+# toSorted() method as a safe way to sort an array without altering the original array. lst = fruits.toSorted();
+
+	
+	Array Iteration:
+forEach(): The forEach() method calls a function (a callback function) once for each array element.
+	const numbers = [45, 4, 9, 16, 25];
+	numbers.forEach(myFunction);
+	function myFunction(value, index, array) {
+	}
+	function myFunction(value) {
+	}
+
+map(): The map() method creates a new array by performing a function on each array element and does not change the original array.
+	const numbers1 = [45, 4, 9, 16, 25];
+	const numbers2 = numbers1.map(myFunction);
+
+filter(): The filter() method creates a new array with array elements that pass a test. This example creates a new array from elements with a value larger than 18:
+	const numbers = [45, 4, 9, 16, 25];
+	const over18 = numbers.filter(myFunction);
+
+	function myFunction(value, index, array) {
+	  return value > 18;
+	}
+reduce(): The reduce() method runs a function on each array element to produce (reduce it to) a single value.
+	let sum = numbers.reduce(myFunction);
+	function myFunction(total, value, index, array) {
+	  return total + value;
+	}
+	 
+# The Array.from() method returns an Array object from any object with a length property or any iterable object. Array.from("ABCDEFG");
+# The Array.keys() method returns an Array Iterator object with the keys of an array. 
+	const fruits = ["Banana", "Orange", "Apple", "Mango"];
+	const keys = fruits.keys(); --> [0,1,2,3]
+# Array Spread (...): The ... operator expands an iterable (like an array) into more elements.
+	const q1 = ["Jan", "Feb", "Mar"]; const q2 = ["Apr", "May", "Jun"];
+	const year = [...q1, ...q2,];
+
+# Array const: It does NOT define a constant array. It defines a constant reference to an array.
+	
+# The Nullish Coalescing Operator (??): The ?? operator returns the first argument if it is not nullish (null or undefined). let result = name ?? text;
+
+# The Optional Chaining Operator (?.): The ?. operator returns undefined if an object is undefined or null (instead of throwing an error). car?.name;
+
+
+	Loop:
+for: for (key in object), for (variable of iterable)  --> (in: index, of: value)
+
+	Maps: const fruits = new Map([
+		  ["apples", 500],
+		  ["bananas", 300],
+		  ["oranges", 200]
+		]);
+		fruits.set("apples", 500);fruits.get("apples");
+		fruits.size;fruits.delete("apples");
+
+# In JavaScript there are 5 different data types that can contain values: string, number, boolean, object, function.
+# There are 6 types of objects: Object, Date, Array, String, Number, Boolean.
+# Please observe: The data type of NaN is number, The data type of an array is object, The data type of a date is object, The data type of null is object, The data type of an undefined variable is undefined *, The data type of a variable that has not been assigned a value is also undefined *.
+
+
+
+#         Class: If constructor method is not defined, JavaScript will add an empty constructor method. (a method is simply a function that is a property of an object. When a function is defined as a property of an object, it is called a method of that object.)
+
+			class Car {
+			  constructor(name, year) {
+			    this.name = name;
+			    this.year = year;
+			  }
+			  age() {
+			    const date = new Date();
+			    return date.getFullYear() - this.year;
+			  }
+			}
+# Modules: allow you to break up your code into separate files. There are two types of exports: Named Exports and Default Exports.
+
+# Variables created without a declaration keyword (var, let, or const) are always global, even if they are created inside a function.
+
+
+------------------------------------------------------------------------------------------
+
+The Browser Object Model (BOM): allows JavaScript to "talk to" the browser.
+
+# window.innerHeight - the inner height of the browser window (in pixels)
+# window.innerWidth - the inner width of the browser window (in pixels)
+# window.open() - open a new window
+# window.close() - close the current window
+# window.moveTo() - move the current window
+# window.resizeTo() - resize the current window
+
+# window.location.href returns the href (URL) of the current page
+# window.location.hostname returns the domain name of the web host
+# window.location.port returns the number of the internet host port (of the current page)
+# window.location.pathname returns the path and filename of the current page
+# window.location.protocol returns the web protocol used (http: or https:)
+# window.location.assign() loads a new document
+
+$$$ Window Screen
+The window.screen object can be written without the window prefix. Properties: screen.width,  screen.height, screen.availWidth, screen.availHeight, screen.colorDepth, screen.pixelDepth
+
+$$$ The window.history object contains the browsers history.
+# history.back() - same as clicking back in the browser
+# history.forward() - same as clicking forward in the browser
+
+$$$ The window.navigator object contains information about the visitor's browser.
+# navigator.cookieEnabled     - returns the application name of the browser
+# navigator.appCodeName       - returns the application code name of the browser
+# navigator.platform          - returns the browser platform (operating system)
+# navigator.appVersion        - returns version information about the browser
+# navigator.onLine            - returns true if the browser is online
+
+$$$ window.alert(), window.confirm(), window.prompt() (used if you want the user to input a value before entering a page)
+
+$$$ Timing Events: The window object allows execution of code at specified time intervals.
+# The window.setTimeout(function, milliseconds) method can be written without the window prefix.
+# If the function has not already been executed, you can stop the execution by calling the clearTimeout() method: myVar = setTimeout(function, milliseconds); clearTimeout(myVar);
+# The setInterval() method repeats a given function at every given time-interval. window.setInterval(function, milliseconds);
+# window.clearInterval(timerVariable)
+
+$$$ The localStorage object provides access to a local storage for a particular Web Site. It allows you to store, read, add, modify, and delete data items for that domain. The data is stored with no expiration date, and will not be deleted when the browser is closed. localStorage.setItem("name", "John Doe"); localStorage.getItem("name"); removeItem(keyname);
+
+$$$ The sessionStorage object is identical to the localStorage object. The difference is that the sessionStorage object stores data for one session. The data is deleted when the browser is closed.
+
+
+
+
+
+
+
+
+
+
+
+
+

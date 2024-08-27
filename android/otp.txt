@@ -1,0 +1,85 @@
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button otp;
+    private TextView msg;
+    private FirebaseAuth auth;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        otp=findViewById(R.id.otp);
+        auth=FirebaseAuth.getInstance();
+        otp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhoneAuthOptions options=PhoneAuthOptions.newBuilder(auth)
+                        .setPhoneNumber("+8801568079422")
+                        .setTimeout(60l,TimeUnit.SECONDS)
+                        .setActivity(MainActivity.this)
+                        .setCallbacks(mCallBack)
+                        .build();
+                PhoneAuthProvider.verifyPhoneNumber(options);
+            }
+        });
+        mCallBack=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                signin(phoneAuthCredential);
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                msg.setText("failed");
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                msg.setText("Code sent");
+
+                Intent optintent=new Intent(MainActivity.this,Home.class);
+                optintent.putExtra("auth",s);
+                startActivity(optintent);
+            }
+        };
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user =auth.getCurrentUser();
+        if (user!=null){
+            sendToMain();
+        }
+    }
+
+    private void sendToMain() {
+        Intent mainint=new Intent(MainActivity.this,MainActivity.class);
+        startActivity(mainint);
+        finish();
+    }
+    private void signin(PhoneAuthCredential credential){
+        auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    sendToMain();
+                }
+            }
+        });
+    }
+
+    public void onClickRegis(View v){
+        startActivity(new Intent(getApplicationContext(),Registration.class));
+    }
+    public void onClickLog(View v){
+        startActivity(new Intent(getApplicationContext(),Login.class));
+    }
+
+
+
+}

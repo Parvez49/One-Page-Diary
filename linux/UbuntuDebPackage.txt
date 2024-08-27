@@ -1,0 +1,30 @@
+
+
+
+$ dpkg-deb --build ffb // to build deb package
+$ sudo dpkg -i ffb.deb // to install dpkg package in machine
+$ ffb
+
+$ ldd firefox    // to show dependencies
+$ ldd firefox-bin 
+
+
+$ --------------------- Folder Structure to make Deb Package -----------------
+
+MainDerectory                        // folder
+    DEBIAN                           // folder
+        control                      // file without extension
+            Package: firefoxpackage
+            Version: 1.0
+            Architecture: all
+            Maintainer: Your Name
+            Description: Your modified version of Firefox
+    
+    usr                              // folder
+        bin                          // folder
+            --> all necessary file and folder for build package
+            
+Now terminal command:
+$ dpkg-deb --build MainDerectory
+$ sudo dpkg -i MainDerectory.deb
+$ bin_file_name   --> to run install package

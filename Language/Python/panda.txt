@@ -1,0 +1,43 @@
+
+
+
+df = pd.read_csv('data.csv')  //to read csv file
+
+mydataset = {
+  'cars': ["BMW", "Volvo", "Ford"],
+  'passings': [3, 7, 2]
+}
+
+myvar = pd.DataFrame(mydataset)
+df = pd.DataFrame(mydataset, index = ["ind1", "ind2", "ind3"])
+
+df.corr() 
+
+df.loc[7, 'Duration'] = 45
+
+df.plot(kind = 'scatter', x = 'Duration', y = 'Calories')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

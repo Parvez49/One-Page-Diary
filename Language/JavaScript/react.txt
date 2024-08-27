@@ -1,0 +1,153 @@
+
+$ npm create vite  # to create vite react project
+$ npm install      # to install node_modules in vite project
+$ npm run dev      # to run project
+$ npm run build    # to make production step
+
+
+$ rsc  --> functional components
+
+$ <h1 style={{color:'red'}}>Hellow World!!!</h1>  # inline css in jsx
+
+# ternary operator in jsx:
+  {mark>=80?<h1>A+</h1>:<h1>Pass</h1>}
+  
+# immediately- invoked function:
+  {
+    (()=>{})()
+  }
+  Example:
+     {
+        (()=>{
+          if (mark>=80){
+            return <h1>A+</h1>
+          }
+          else if (mark>=70){
+            return <h1>A</h1>
+          }
+          else{
+            return <h1>Fail</h1>
+          }
+        })()
+      }
+      
+# loop in jsx:
+  {
+    city.map((val,ind)=>{
+      return <h1 key={ind.toString()}>{val}</h1>
+    })
+   }
+ 
+# props in jsx:
+  from Parent Component:
+    <Hero title="Hero Components" />
+  in child component:
+    const Hero = (props) => {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+        </div>
+    );
+  };
+
+# to prevent form default nature:
+  const PostFormData=(event)=>{
+    event.preventDefault();
+  }
+  <form onSubmit={PostFormData}>
+	<input placeholder='name'></input>
+	<button>Submit</button>
+  </form>
+
+
+# React Hook:
+  
+  useRef()
+  Example-1:
+    let myImg=useRef()
+
+    const change = ()=>{
+      myImg.current.src="https://placehold.co/600x400?text=Hello+World";
+      myImg.current.setAttribute("height","200px");
+      myImg.current.setAttribute("width","300px");
+    }
+    
+    <img ref={myImg} src='https://placehold.co/600x400' />
+    <button onClick={change}>Submit</button>
+    
+  Example-2:
+     let firstName,lastName=useRef()
+     const change = ()=>{
+      let fName=firstName.value;
+      let lName=lastName.value;
+
+      alert(fName+ ' '+ lName)
+    }
+    
+    <input ref={(f)=>firstName=f} placeholder='First Name' /><br />
+    <input ref={(l)=>lastName=l} placeholder='Last Name' /><br />
+
+  Example-3:
+    let number=useRef(0)
+
+    const change = ()=>{
+      number.current++;
+      console.log(number);
+    }
+    
+  Example-4: Fetch Api Data
+     let apiData=useRef(null)
+     let myPTag=useRef()
+     const fetchData = async()=>{
+      const response=await fetch('https://dummyjson.com/products/1');
+      apiData.current=await response.json();
+    }
+    const showData = ()=>{
+      myPTag.current.innerText=JSON.stringify(apiData.current);
+    }
+    
+ 
+useState()
+    Example-1:  // increment number variable by one on each click.
+       const [number,setNumber]=useState(0);
+       <h1>Number: {number}</h1>
+       <button onClick={()=>setNumber(number+1)}>Click</button>
+    
+    Example-2:
+         const [myObj,setmyObj]=useState({
+	    key1:"value 1",
+	    key2:"value 2",
+	    key3:"value 3"
+	  })
+	 const change = ()=>{
+	    setmyObj((prv)=>({
+	      ...prv,
+	      key1:'New value 1'
+	    }));
+	  }
+	  
+	  
+     Example-3:
+          const [lst,setlst]=useState([])
+	  const [st,setst]=useState()
+
+	  const pushItem=()=>{
+	    lst.push(st)
+	    setlst([...lst])
+	  }
+	  
+	<p>{lst.length}</p>
+
+	<input onChange={(e)=>setst(e.target.value)} />
+	<button onClick={pushItem}>Click</button>
+	       
+
+
+
+
+
+
+
+
+
+

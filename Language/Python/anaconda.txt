@@ -1,0 +1,7 @@
+
+
+# source ~/.bashrc      // to activate anaconda in terminal
+
+# anaconda-navigator    // to open anaconda visual app
+
+

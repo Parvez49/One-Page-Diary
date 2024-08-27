@@ -1,0 +1,34 @@
+public void onokbuttonclick(View v){
+        EditText et=findViewById(R.id.editTextTextPersonName);
+        String st=et.getText().toString();
+        TextView tv=findViewById(R.id.tv);
+        tv.setText(st);
+
+    }
+
+//--------Authentication using email and password---------------
+//Include This code function or OnCreate
+FirebaseAuth.getInstance().createUserWithEmailAndPassword("ph49@gmail.com","111111").addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(),Home.class));
+
+            }else{
+                Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_LONG).show();
+            }
+        });
+
+//---------------Log in if user have registered on app---------------
+
+FirebaseAuth.getInstance().signInWithEmailAndPassword(email:"ph49@gmail.com",password:"111111").addOnCompleteListener(task -> {
+//FirebaseAuth.getInstance().signInWithEmailAndPassword("ph49@gmail.com","111111").addOnCompleteListener(task -> {
+        //FirebaseAuth.getInstance().createUserWithEmailAndPassword("ph49@gmail.com","111111").addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                //Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(),Home.class));
+
+            }else{
+                Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_LONG).show();
+            }
+        });

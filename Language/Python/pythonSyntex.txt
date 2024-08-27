@@ -1,0 +1,35 @@
+
+
+
+-----------List-----------------
+Create list
+	*1.1d--->li=[0]*5 or li = [0 for i in range(N)]
+	*2.1d--->pow2 = [2 ** x for x in range(10)]
+	*1.2d---<li = [[0]*cols]*rows
+	*2.2d--->li = [[0 for i in range(cols)] for j in range(rows)]
+		arr=[]
+		for i in range(rows):
+    			col = []
+    			for j in range(cols):
+        			col.append(0)
+    			arr.append(col)
+		print(arr)
+	#use 2.2 for creating 2d list and working with index
+List method
+li=['p','a','r',0,1,2,3,4]
+	*li.append()  //adds an element to the end of the list
+	*insert()--->insert an item at the defined index.  
+		     'o' is inserted at index 3 (4th position)li.insert(3, 'v')
+
+	*extend()--->adds all elements of a list to another list
+	*sort()--->sort items in a list in ascending order
+	*reverse()--->reverse the order of items in the list
+	*remove()--->remove an item from the list. --->li.remove('v')
+	*pop()   --->returns and removes an element at the given index
+	*clear()--->removes all items from the list
+	*index()--->returns the index of the first matched item
+	*count()--->returns the count of the number of items passed as an argument
+	*copy()--->returns a shallow copy of the list
+
+##Difference strip() and split(): strip() is used to removed specefic character from strin. its may be whitespace, character, symbol etc
+				  split() is to make sub string list break a string
