@@ -24,7 +24,7 @@ $ ngrok config check  // this command find ngrok.yml file
 	    addr: 8003
 	    proto: http
 	    
- $ ngrok start --all   // after configuring ngrok.yml file
+$ ngrok start --all   // after configuring ngrok.yml file
 
 
 

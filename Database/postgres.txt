@@ -51,7 +51,7 @@ $ sudo service postgresql restart
 
 
 
-# ------------------------------------------------------------------------------------------
+# -----------------------------------Import Database-------------------------------------------------------
 
 # Download Database from Postgres
 root@trims:~# pg_dump -U <postgres_user> -h localhost -p 5432 <database_name> > <download_database_name.sql>
