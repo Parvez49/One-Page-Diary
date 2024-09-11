@@ -1,5 +1,6 @@
 
 
+# -------------------------- SSH GITHUB ---------------------------
 $ ls -al ~/.ssh   // to check ssh list in pc
 $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"   // to generating ssh command
 $ cat ~/.ssh/id_rsa.pub     // To display the content of your SSH public key
@@ -12,9 +13,30 @@ $ lsof -i :8001   // to verify specific process run on particuler port
 $ kill -9 972846  // to kill process id 972846
 
 
+# Other ssh key set for other github account
+$ ssh-keygen -t rsa -b 4096 -C "other@example.com" -f ~/.ssh/id_rsa_other
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_rsa_another
+$ cat ~/.ssh/id_rsa_another.pub
+
+# if not work
+$ nano ~/.ssh/config
+	# GitHub account 1
+	Host github.com-account1
+	    HostName github.com
+	    User git
+	    IdentityFile ~/.ssh/id_rsa
+	    IdentitiesOnly yes
+
+	# GitHub account 2
+	Host github.com-account2
+	    HostName github.com
+	    User git
+	    IdentityFile ~/.ssh/id_rsa_another
+	    IdentitiesOnly yes
 
 
-
+# --------------------------- Nohup setting ---------------------------
 $ hohup bash runserver.sh &
 
 $ ps aux | grep command_to_run  // Stopping a nohup Process
