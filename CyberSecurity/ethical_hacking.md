@@ -1,0 +1,2 @@
+## Ethical hacking
+ also known as white-hat hacking, is the practice of intentionally probing computer systems, networks, or applications for vulnerabilities to identify and fix security weaknesses before malicious hackers (black-hat hackers) can exploit them.
