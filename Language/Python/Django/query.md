@@ -26,36 +26,86 @@
  Example 1:
  ```
 
-   class Author(models.Model):
-    name = models.CharField(max_length=100)
+    class Author(models.Model):
+        name = models.CharField(max_length=100)
 
-   class Genre(models.Model):
-    name = models.CharField(max_length=100)
+    class Genre(models.Model):
+        name = models.CharField(max_length=100)
 
-   class Book(models.Model):
-    title = models.CharField(max_length=100)
-    authors = models.ManyToManyField(Author)
-    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    class Book(models.Model):
+        title = models.CharField(max_length=100)
+        authors = models.ManyToManyField(Author)
+        publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
    
-   books = Book.objects.prefetch_related(
-    Prefetch('authors', queryset=Author.objects.filter(name__startswith='J')),
-    'publisher'
-   ).all()
+    books = Book.objects.prefetch_related(
+        Prefetch('authors', queryset=Author.objects.filter(name__startswith='J')),
+        'publisher'
+        ).all()
 
-   The above take 2 query.
- ```
+    The above take 2 query.
+```
+
+### only() and defer()
+ The only() method is used to limit the fields that are loaded for a model instance. It’s primarily used to optimize memory usage by retrieving only specific fields from the database when you don’t need all fields of a model. It returns model instances with all model fields, but with lazy loading of fields that are not requested.
+```
+
+    books = Book.objects.prefetch_related(
+     Prefetch('genres', queryset=Genre.objects.only('id','name'))          # This will only load the 'name' field from Genre
+    ).all()
+
+    for book in books:
+        print(f"Book: {book.title}")
+        for genre in book.genres.all():
+            print(f"  Genre ID: {genre.id}, Genre Name: {genre.name}")
+
+
+    books = Book.objects.prefetch_related(
+     Prefetch('genres', queryset=Genre.objects.defer('description'))  # This will load all fields from Genre except 'description'
+    ).all()
+```
+
+
+### values() and values_list()
+ Avoiding Unwanted Joins Using values() or values_list()
+ The values() method is used to retrieve a dictionary-like result containing only specific fields (columns) from the model, not full model instances. This is useful when you want to fetch only a subset of fields for a model, and you don't need the full model objects (instances).
+```
+    books = Book.objects.prefetch_related(
+     Prefetch('genres', queryset=Genre.objects.values('id', 'name'))  # Fetch 'id' and 'name' as dictionaries
+    ).all()
+
+    # Now let's access the data
+    for book in books:
+        print(f"Book: {book.title}")
+        for genre in book.genres.all():
+            # Since 'genres' is now a queryset of dictionaries, we access fields like dictionary keys
+            print(f"  Genre ID: {genre['id']}, Genre Name: {genre['name']}")
+
+    
+    books = Book.objects.prefetch_related(
+     Prefetch('genres', queryset=Genre.objects.values_list('id', 'name'))  # Fetch 'id' and 'name' as tuples
+    ).all()
+
+    # Accessing the data (Note that genres are now tuples)
+    for book in books:
+        print(f"Book: {book.title}")
+        for genre in book.genres.all():
+            # Access fields as tuple indices
+            genre_id, genre_name = genre
+            print(f"  Genre ID: {genre_id}, Genre Name: {genre_name}")
+```
+
 
  Example 2:
  ```
-   class LabelRefConfiguration(BaseModelWithUID):
-    label_ref = models.CharField(max_length=100,unique=True)
+    class LabelRefConfiguration(BaseModelWithUID):
+        label_ref = models.CharField(max_length=100,unique=True)
 
-   class Order(BaseModelWithUID):
-    job_bag_number = models.CharField(max_length=150, blank=True)
+    class Order(BaseModelWithUID):
+        job_bag_number = models.CharField(max_length=150, blank=True)
 
-   class  OrderProductCodeConnector(BaseModelWithUID):
-    order = models.ForeignKey(Order, related_name='product_code_orders', on_delete=models.SET_NULL, null=True, blank=True)
-    product_code = models.ForeignKey(LabelRefConfiguration, related_name='product_code_details', on_delete=models.SET_NULL, null=True, blank=True)
+    class  OrderProductCodeConnector(BaseModelWithUID):
+        order = models.ForeignKey(Order, related_name='product_code_orders', on_delete=models.SET_NULL, null=True, blank=True)
+        product_code = models.ForeignKey(LabelRefConfiguration, related_name='product_code_details', on_delete=models.SET_NULL, null=True, blank=True)
 
 
     queryset = Order.objects.prefetch_related(
