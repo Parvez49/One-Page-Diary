@@ -1,0 +1,62 @@
+#
+
+# ----------------------------- Shadow ------------------------
+CSS:
+Text Shadow:
+	text-shadow: 2px 2px red;                   // horizontal, vertical, color
+	text-shadow: 2px 2px 4px #000000;           // horizontal, vertical, blur, color
+	
+Box Shadow: 
+	box-shadow: 10px 10px lightblue;            // horizontal, vertical, color
+	box-shadow: 10px 10px 5px lightblue;        // horizontal, vertical, blur, color
+	box-shadow: 10px 10px 5px 40px lightblue;   // horizontal, vertical, blur, spread, color
+	box-shadow: 10px 10px 5px lightblue inset;  // innder shadow
+	
+Tailwind:
+tailwind.config.js:
+	extend: {
+	      boxShadow: {
+		'3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
+	      }
+	    }
+	or 
+	shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
+	
+# ------------------------------ Gradient ----------------------
+CSS:
+Linear Gradients (goes down/up/left/right/diagonally):
+	background-image: linear-gradient(direction, color-stop1, color-stop2, ...); // at least two color stops
+	background-image: linear-gradient(red, yellow);               // top to bottom default
+	background-image: linear-gradient(to right, red , yellow);    // to right
+	background-image: linear-gradient(to bottom right, red, yellow);
+	linear-gradient(180deg, red, yellow);
+	background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));  // transparency
+
+Radial Gradients:
+	radial-gradient(shape size at position, start-color, ..., last-color);
+	background-image: radial-gradient(red, yellow, green);        // default all take same place
+	background-image: radial-gradient(red 5%, yellow 15%, green 60%);
+	repeating-radial-gradient(red, yellow 10%, green 15%);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+

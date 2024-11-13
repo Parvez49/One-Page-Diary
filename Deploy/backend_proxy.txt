@@ -1,0 +1,23 @@
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+
+/etc/apache2/sites-available/<backend>.conf
+
+<VirtualHost *:80>
+    ServerName email.love.merchantbay.com
+
+    ProxyPass / http://localhost:8000/
+    ProxyPassReverse / http://localhost:8000/
+    
+    # Optional: Add more settings, like error logs, etc.
+    ErrorLog ${APACHE_LOG_DIR}/email.love.merchantbay.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/email.love.merchantbay.com-access.log combined
+</VirtualHost>
+
+
+sudo a2ensite backned.conf
+sudo systemctl restart apache2
+
+
+
+

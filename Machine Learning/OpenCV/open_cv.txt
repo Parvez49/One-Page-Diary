@@ -1,0 +1,22 @@
+# Open CV
+
+$ image.shape --> (row/height, col/width, channel) --> (720,1280,3)
+channels: represent different color components or layers of an image. (Grayscale: 1, RGB:3) 
+
+
+
+
+
+
+# Video
+
+video = v2.VideoCapture(video_path)
+ret =True
+while ret:
+    ret, frame = video.read()
+    if ret:
+        cv2.imshow('frame',frame)
+        cv2.waitKey(40)
+        
+video.release()
+cv2.destroyAllWindows()
