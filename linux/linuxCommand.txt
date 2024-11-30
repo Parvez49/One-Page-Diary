@@ -1,4 +1,8 @@
 
+#### To open vscode editor using git command:code .
+#### To move a directory: cd Desktop/
+#### To create a folder on directory: mkdir ph(folder name)
+####To create a file: touch ph.py(file name with extension)
 
 
 

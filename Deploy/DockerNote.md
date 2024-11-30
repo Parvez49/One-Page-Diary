@@ -1,10 +1,12 @@
 
+
+```
 https://dev.to/thedevtimeline/add-mongodb-and-postgresql-in-django-using-docker-55j6
 https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e
 https://medium.com/@audretschjames/understanding-docker-as-if-it-were-a-gameboy-96c96392efbf
+```
 
-
-Docker:
+# Docker:
      Docker Image: Like Class.
      
      Docker Container: Like Object of Class.
@@ -22,6 +24,7 @@ Docker:
      Docker-Compose: Docker Compose coordinates containers to run together.
      
 
+```
 docker-compose exec <image_name> <command>
 docker-compose exec authentication python manage.py migrate
 
@@ -29,6 +32,7 @@ $ docker-compose down                  // stop and remove docker container
 $ docker-compose stop [service-name...]   // stop without remove container
 $ sudo docker rm <service name>           // remove docker container
 $ sudo docker rmi <directory-service_name>   // to remove associated images with that container
+```
 
 
 # Docker Command:
