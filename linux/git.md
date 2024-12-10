@@ -80,4 +80,6 @@ git push -u origin main
 git checkout -b <branch_name>         // to create and move new branch
 git checkout --orphan <branch_name>   // to create empty commit new branch with existing files and folders.
 git rm -rf .                          // to remove all files and folders
+git branch -m <rename_branch_name> 
+git push --set-upstream origin <rename_current_branch_in_remote>
 ```
