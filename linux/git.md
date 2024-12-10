@@ -74,3 +74,10 @@ git remote add origin git@github.com:Parvez49/Programming.git
 git branch -M main
 git push -u origin main
 ```
+
+## git branch
+```
+git checkout -b <branch_name>         // to create and move new branch
+git checkout --orphan <branch_name>   // to create empty commit new branch with existing files and folders.
+git rm -rf .                          // to remove all files and folders
+```
