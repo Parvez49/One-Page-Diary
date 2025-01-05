@@ -1,0 +1,2 @@
+## The line sweep algorithm:
+ is a computational geometry technique used to solve problems involving intervals, points, or geometric shapes efficiently. The algorithm involves "sweeping" a conceptual line (or plane) across the input space and processing events in a sorted order.
