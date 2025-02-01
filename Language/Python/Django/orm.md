@@ -48,7 +48,14 @@ total_products = Product.objects.aggregate(Count('id'))     # Get the total numb
 products = Product.objects.annotate(order_count=Count('order'))      # products.order_count = 12345, 0 if no order.
 products = Product.objects.annotate(order_count=Count('orders', filter=Q(orders__status='completed')))
 
+
+# alias(*args, **kwargs) Same as annotate(), but instead of annotating objects in the QuerySet, saves the expression for later reuse with other QuerySet methods. 
+This is useful when the result of the expression itself is not needed but it is used for filtering, ordering, or as a part of a complex expression.
+
+from django.db.models import Count
+>>> blogs = Blog.objects.alias(entries=Count("entry")).filter(entries__gt=5)
 ```
+
 
 ## Ordering
 ```
