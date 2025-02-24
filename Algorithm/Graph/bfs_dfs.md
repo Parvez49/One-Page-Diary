@@ -37,7 +37,7 @@ def bfs(adj, s):
 
 ## Dijkstra’s Algorithm
 
-using Adjacency List in O(E logV)
+using Adjacency List in O((V+E) logV) ~ O(E logV)
 
 ```
 import heapq
