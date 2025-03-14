@@ -83,3 +83,9 @@ git rm -rf .                          // to remove all files and folders
 git branch -m <rename_branch_name> 
 git push --set-upstream origin <rename_current_branch_in_remote>
 ```
+
+### 1. What is Git?
+Git is a distributed version control system (DVCS) that is used to track changes in source code.
+
+### 2. What is origin in Git?
+In Git, "origin" states to the default name offered to the remote repository from which local repository was cloned. Git origin is used as a reference to control fetches, pulls, and pushes.
