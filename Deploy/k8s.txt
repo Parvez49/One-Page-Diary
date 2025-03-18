@@ -1,0 +1,55 @@
+# Docker, Django, Kubertenes, nginx
+
+$ brew install kubernetes-cli or brew install kubectl
+
+
+# pod -> one/multiple container
+# node -> one/multiple pod, node can be virtual machine, physical machine, vm on cloud.
+# cluster -> master(node: at least one) + workers(node: at least one)
+
+
+## Master node components:
+api server
+scheduler
+controller manager
+- Kube-controller-manager
+-- Node controller
+-- Replication controller
+-- Endpoint controller
+-- service account and token controllers
+- Cloud-controller-manager
+-- Node controller
+-- Route controller
+-- Service controller
+-- Volume controller
+etcd
+
+
+
+
+### Online kuberenetes labs:
+- kuberenetes playground
+- play with k8s
+- play with kuberneted classroom
+- katacoda
+
+### kubernetes installation tools:
+- minikube
+- kubeadm
+
+
+
+### command keyword functionality:
+
+- apiVersion: Specifies which API version to use.
+- kind: Specifies what type of resources this is (e.g., Deployment, Service, Secret, ConfigMap).
+- metadata: Contains the resource name, labels and annotations.
+- 
+
+
+
+
+
+
+
+
