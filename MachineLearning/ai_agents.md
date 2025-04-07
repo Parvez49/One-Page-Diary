@@ -9,4 +9,3 @@
 ### Types of AI Agents
 - Conversational
 - Automated
-
