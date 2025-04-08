@@ -10,3 +10,6 @@
 ## When Might to Use ManyToManyField?
     1. The relationship between two models is purely many-to-many, and you don't need to store additional data on the relationship itself.
     2. when don’t need complex filtering, ordering, or aggregating based on the relationship.
+
+## XSS (Cross-Site Scripting)
+    XSS is a vulnerability where an attacker injects malicious scripts (usually JavaScript) into web pages viewed by other users.
