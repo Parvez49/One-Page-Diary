@@ -10,3 +10,5 @@
 
 ### When to Use Dynamic Programming (DP)?
     1. Optimal Substructure: Optimal substructure means that we combine the optimal results of subproblems to achieve the optimal result of the bigger problem.
+
+
