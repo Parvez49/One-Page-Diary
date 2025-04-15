@@ -60,4 +60,9 @@ bit.update(2, 1)
 
 print(bit.query(3))  # Output: 2 + 5 + 5 = 12
 
+# Update index 2 by -1 (i.e., arr[2] = 5 -> 4)
+bit.update(2, -1)
+
+print(bit.query(3))  # Output: 2 + 4 + 5 = 11
+
 ```
