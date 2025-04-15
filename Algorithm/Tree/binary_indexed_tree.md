@@ -1,5 +1,4 @@
 # Binary Indexed Tree
-
 A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that provides efficient methods for:
 - Prefix sum queries (sum of elements from index 1 to i)
 - Point updates (updating a single element)
