@@ -1,7 +1,7 @@
 
 ## Machine Learning Engineer Roadmap for 2025
 
-1.Foundational Knowledge 📚
+### 1.Foundational Knowledge 📚
 
 Mathematics & Statistics
 
@@ -22,7 +22,7 @@ Data Basics
   - Working with large datasets using SQL or Big Data tools (e.g., Spark).
 
 
-2. Core Machine Learning Concepts 🤖
+### 2. Core Machine Learning Concepts 🤖
 
 Algorithms
 
@@ -36,7 +36,7 @@ Model Evaluation
   - Metrics: Accuracy, precision, recall, F1-score, ROC-AUC.
   - Hyperparameter tuning (Grid Search, Random Search, Bayesian Optimization).
 
-3. Advanced Topics 🔬
+### 3. Advanced Topics 🔬
 Deep Learning
 
   - Neural Networks: Feedforward, CNNs, RNNs, transformers.
@@ -58,7 +58,7 @@ Reinforcement Learning
   - Markov Decision Processes.
   - Q-learning, deep Q-networks (DQN).
 
-4. Practical Skills & Tools 🛠️
+### 4. Practical Skills & Tools 🛠️
 Cloud Platforms
 
   - AWS, Google Cloud, Azure: Focus on ML services like SageMaker.
@@ -73,7 +73,7 @@ MLOps
   - Experiment tracking: MLflow, Weights & Biases.
   - Automating pipelines: Airflow, Kubeflow.
 
-5. Specialization Areas 🌐
+### 5. Specialization Areas 🌐
 
   - Computer Vision: Image classification, object detection (YOLO, Faster R-CNN).
   - NLP: Conversational AI, language models (GPT, T5).
