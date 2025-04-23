@@ -1,7 +1,30 @@
 
 
+### Closure in Python
+closure is a function object that remembers values in enclosing scopes even if those scopes are no longer present in memory.
+A closure happens when:
+- A nested function (function inside another function) is defined.
+- The inner function refers to variables from the enclosing scope.
+- The enclosing function returns the inner function.
+
+```
+# [*]Enclosing Scope
+def outer_func():
+   x = 90
+  
+   def inner_func():
+      print("Value of x from inner::",x)
+ 
+   inner_function()
+
+outer_func()
+
+[*]Output
+Value of x from inner::90
+```
 
 -----------List-----------------
+```
 Create list
 	*1.1d--->li=[0]*5 or li = [0 for i in range(N)]
 	*2.1d--->pow2 = [2 ** x for x in range(10)]
@@ -30,6 +53,6 @@ li=['p','a','r',0,1,2,3,4]
 	*index()--->returns the index of the first matched item
 	*count()--->returns the count of the number of items passed as an argument
 	*copy()--->returns a shallow copy of the list
-
+```
 ##Difference strip() and split(): strip() is used to removed specefic character from strin. its may be whitespace, character, symbol etc
 				  split() is to make sub string list break a string
