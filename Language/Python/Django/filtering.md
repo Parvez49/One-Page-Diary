@@ -73,3 +73,31 @@ class CustomFilter(MineFilterMixin, filters.FilterSet):
         if value.lower() == "null":
             return queryset.filter(date__isnull=True)
         return queryset.filter(date=value)
+
+```
+
+### Permission
+```
+from rest_framework.permissions import BasePermission, IsAdminUser
+
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Custom permission to allow only admins to post or update permissions.
+    Others can only read.
+    """
+    def has_permission(self, request, view):
+        if request.method in ['GET']:
+            return True  # Anyone can perform GET
+        elif request.method in ['POST', 'PATCH']:
+            return request.user and request.user.is_staff  # Allow only admin users
+        return False
+
+```
+
+### View 
+
+```
+
+
+
+```
