@@ -93,6 +93,36 @@ class IsAdminOrReadOnly(BasePermission):
         return False
 
 ```
+### Serializers
+```
+class PermissionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = ('id', 'name',)
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    permissions = PermissionListSerializer(many=True, read_only=True)
+    permissions_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        write_only=True,
+        required=True,
+        source='permissions',
+        queryset= Permission.objects.all(),
+        error_messages={
+            'does_not_exist': "No matching Permission found for id:'{pk_value}'",
+        }
+    )
+
+    class Meta:
+        model = Role
+        fields = ('id', 'name', 'permissions', 'permissions_ids')
+        extra_fields = {
+            "created_by": {"read_only": True}
+        }
+
+
+```
 
 ### View 
 
