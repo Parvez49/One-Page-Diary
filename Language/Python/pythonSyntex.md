@@ -1,4 +1,5 @@
-
+### Python code execution
+ code -> bytecode(.pyc) -> interprete machine code and run
 
 ### Closure in Python
 closure is a function object that remembers values in enclosing scopes even if those scopes are no longer present in memory.
