@@ -25,3 +25,7 @@
 ### How to classify a problem as a Dynamic Programming Problem? 
     - Typically, all the problems that require maximizing or minimizing certain quantities or counting problems
     - All dp problems satisfy the overlapping subproblems property and most of the classic dp problems also satisfy the optimal substructure property.
+
+## DP Patterns:
+
+### Minimum (Maximum) Path to Reach a Target
