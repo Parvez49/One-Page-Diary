@@ -24,6 +24,95 @@ outer_func()
 Value of x from inner::90
 ```
 
+## Python OOP Cheat Sheet: Book Class
+
+### Class Definition
+```
+from typing import Dict, Union
+
+class LibraryItem:
+    def __init__(self, title: str) -> None:
+        self.title = title
+
+    def get_details(self) -> None:
+        print(f"Library Item: {self.title}")
+
+    def borrow(self) -> None:
+        print(f"Borrowed item: {self.title}")
+
+    def return_item(self) -> None:
+        print(f"Returned item: {self.title}")
+
+class Book(LibraryItem):
+    total_books = 0
+    distinct_books = 0
+
+    def __init__(self, book_name: str, copies: int) -> None:
+        self.book = book_name
+        self.copies = copies
+        Book.total_books += copies
+        Book.distinct_books += 1
+
+    # Instance Method
+    def borrow(self) -> None:
+        if self.copies > 0:
+            self.copies -= 1
+            Book.total_books -= 1
+            print(f"You borrowed '{self.book}'. Copies left: {self.copies}")
+        else:
+            print(f"'{self.book}' is currently unavailable.")
+
+    def return_book(self) -> None:
+        self.copies += 1
+        Book.total_books += 1
+        print(f"You returned '{self.book}'. Copies now: {self.copies}")
+
+    def get_details(self) -> None:
+        print(f"Book: {self.book}, Copies Available: {self.copies}")
+
+    # Class Method
+    @classmethod
+    def library_book_stats(cls) -> None:
+        print(f"Total copies of {cls.distinct_books} distinct books: {cls.total_books}")
+
+    @classmethod
+    def new_object_from_dict(cls, data: Dict[str, Union[str, int]]) -> "Book":
+        return cls(data['book_name'], data['copies'])
+
+    # Static Method
+    @staticmethod
+    def is_valid_book_data(data: Dict[str, Union[str, int]]) -> bool:
+        if not isinstance(data, dict):
+            return False
+        required_keys = {'book_name', 'copies'}
+        if not required_keys.issubset(data.keys()):
+            return False
+        if not isinstance(data['book_name'], str) or not isinstance(data['copies'], int):
+            return False
+        if data['copies'] <= 0:
+            return False
+        return True
+```
+### Example Usage
+```
+book_data = {"book_name": "Clean Code", "copies": 3}
+
+if Book.is_valid_book_data(book_data):
+    b1 = Book.new_object_from_dict(book_data)
+    b1.get_details()
+    b1.borrow()
+    b1.return_book()
+    Book.library_book_stats()
+else:
+    print("Invalid book data.")
+```
+
+### Four Pillars of OOP Demonstrated in Book Class
+- Encapsulation 🔒: bundling data and methods that operate on that data within a class, and restricting direct access to some of the class's components. Variables like copies and book are only modified through methods (borrow_book, return_book), not directly exposed.
+- Abstraction 🧠: Abstraction means hiding complex internal implementation and exposing only essential parts of the object’s behavior to the outside world. The is_valid_book_data() method hides validation logic, offering a simple interface for data checking. new_object_from_dict() abstracts how a Book object is created from a dictionary, which could come from user input, a database, or an API.
+-Inheritance 🧬: Book inherits from LibraryItem, reusing and customizing base methods like get_details() and borrow().
+- Polymorphism 🧩: borrow() and return_item() behave differently in Book compared to base LibraryItem.
+
 -----------List-----------------
 ```
 Create list
