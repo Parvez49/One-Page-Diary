@@ -113,7 +113,9 @@ else:
 -Inheritance 🧬: Book inherits from LibraryItem, reusing and customizing base methods like get_details() and borrow().
 - Polymorphism 🧩: borrow() and return_item() behave differently in Book compared to base LibraryItem.
 
------------List-----------------
+
+
+### List
 ```
 Create list
 	*1.1d--->li=[0]*5 or li = [0 for i in range(N)]
