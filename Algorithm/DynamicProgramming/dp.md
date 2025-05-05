@@ -28,4 +28,79 @@
 
 ## DP Patterns:
 
-### Minimum (Maximum) Path to Reach a Target
+### 1. Minimum (Maximum) Path to Reach a Target
+routes[i] = min(routes[i-1], routes[i-2], ... , routes[i-k]) + cost[i]
+
+### 0/1 Knapsack problem
+- Problem Statement: A set of n items, Each item has: A weight w[i], A value v[i] and A knapsack with a maximum weight capacity W.
+- Goal: Pick a subset of items to put in the knapsack so that: Total weight ≤ W, Total value is maximized, either take the whole item or none (hence 0/1)
+#### Example
+```
+Items:       [weight, value]
+Item 1:      [1, 1]
+Item 2:      [3, 4]
+Item 3:      [4, 5]
+Capacity W:  7
+```
+```
+from typing import List
+
+def knapsack_bottom_up(weights: List[int], values: List[int], W: int) -> int:
+    n = len(weights)
+    # dp[i][w] = max value using first i items with capacity w
+    dp = [[0] * (W + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        wi, vi = weights[i - 1], values[i - 1]
+        for w in range(0, W + 1):
+            # don't take item i
+            dp[i][w] = dp[i - 1][w]
+            # take item i, if it fits
+            if wi <= w:
+                dp[i][w] = max(dp[i][w],
+                               dp[i - 1][w - wi] + vi)
+    return dp[n][W]
+
+# top-down approach
+
+from functools import lru_cache
+from typing import List
+
+def knapsack_top_down(weights: List[int], values: List[int], W: int) -> int:
+    n = len(weights)
+
+    @lru_cache(None)
+    def dp(i: int, rem_w: int) -> int:
+        # base case: no items left or no capacity
+        if i == n or rem_w == 0:
+            return 0
+
+        wi, vi = weights[i], values[i]
+        # option 1: skip this item
+        res = dp(i + 1, rem_w)
+        # option 2: take this item (if it fits)
+        if wi <= rem_w:
+            res = max(res, vi + dp(i + 1, rem_w - wi))
+        return res
+
+    return dp(0, W)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
