@@ -1,27 +1,27 @@
 
-# tmux
-# exit
+$ Multiple terminal control from on termianl
 
-# ctrl-b %     // to create left panes
-# ctrl-b "     // to create panes in bottom
-# ctrl-b <-,-> // to move left or rigth window
+$ ctrl-b %     // to create left panes
+$ ctrl-b "     // to create panes in bottom
+$ ctrl-b <-,-> // to move left or rigth window
 
-# ctrl-b c     // to create new window
-# ctrl-b 0,1   // to move window
-# ctrl-b ,     // to rename window
+$ ctrl-b c     // to create new window
+$ ctrl-b 0,1   // to move window
+$ ctrl-b ,     // to rename window
 
-# ctrl-b [     // to move copy mode.
-    # ctrl-b up,down // to move cursor in up or down.
-    # q        // to back from copy mode
+$ ctrl-b [     // to move copy mode.
+$ ctrl-b up,down // to move cursor in up or down.
+$ q            // to back from copy mode
 
 # ------------ Session -------------
+# to create a new session
+$ tmux new-session -s session_name 
+$ tmux rename-session -t old_name to new_name
 
-# ctrl-b d     // to detach session
+# connect a session
+$ tmux ls     // all session list
+$ tmux attach -t session_name
+$ ctrl-b d     // to detach session
 
-# tmux new-session -s session_name 
-# tmux rename-session -t old_name to new_name
-# tmux kill-session -t session_name
-
-# tmux attach -t session_name
-
-# tmux ls     // all session list
+# to terminate a session
+$ tmux kill-session -t session_name
