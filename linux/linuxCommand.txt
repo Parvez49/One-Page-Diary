@@ -1,4 +1,21 @@
 
+## User Management
+$ sudo -i          // Only users in the sudo group can run sudo -i and gain root access
+$ su - <user_name> // (substitute user) switch user in terminal mode
+$ whoami           // gives current user name
+$ sudo deluser <username> <group_name>    // Only remove username from the group_name
+
+
+### Create a Regular User
+$ sudo adduser <username>
+$ id <username>        // Verify the user
+$ groups <username>    // Verify groups list
+$ 
+
+
+
+
+
 #### To open vscode editor using git command:code .
 #### To move a directory: cd Desktop/
 #### To create a folder on directory: mkdir ph(folder name)
