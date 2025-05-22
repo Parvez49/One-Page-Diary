@@ -1,8 +1,0 @@
-
-Agile is a time boxed, iterative approach, to software development, 
-to deliver the product incrementlly, instead of all at once.
-
-Functionality --> Plan --> Implement --> Test --> Review
-
-Review -- Satisfactory --> Yes --> build 
-                       --> No  --> Plan 
