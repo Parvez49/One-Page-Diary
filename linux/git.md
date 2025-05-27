@@ -39,6 +39,9 @@
  git diff (id) (id) (that means git return difference between two commit)
 ```
 
+### To restore a file:
+$ git restore <file>    // Restore a file from the last commit
+$ git restore .         // Restore all changes from the last commit
 
 ### To remove a file: 
 $ git rm ph.py (if we delete file by using git command then file will be deleted from both directory and git stage)
