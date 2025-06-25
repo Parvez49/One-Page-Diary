@@ -1,4 +1,13 @@
+## SSH (Secure Shell):
+  is a network protocol used to securely connect to and control remote computers over a network — usually over the internet.
 
+### authorized_keys: 
+  Holds the list of public keys that are allowed to connect to user account without a password.
+
+### id_rsa: 
+  The public key is derived from this.
+### id_rsa.pub:
+  Used to verify that a connecting client holds the matching private key.
 
 # -------------------------- SSH GITHUB ---------------------------
 $ ls -al ~/.ssh   // to check ssh list in pc
