@@ -9,7 +9,16 @@
 ### id_rsa.pub:
   Used to verify that a connecting client holds the matching private key.
 
-# -------------------------- SSH GITHUB ---------------------------
+## SSH Connection Flow (Local_PC → Server_PC)
+   1. Generate SSH Key Pair on Local_PC (if not exists)
+      $ ssh-keygen -t rsa -b 4096                  // Creates ~/.ssh/id_rsa (private) and ~/.ssh/id_rsa.pub (public) 
+   2. Copy Public Key to Server_PC
+      $ ssh-copy-id <server_user>@<server_ip>      // Adds Local_PC's public key to Server_PC's ~/.ssh/authorized_keys
+   3. Connect to Server_PC
+      $ ssh <server_user>@<server_ip>              // Authenticates using the private key (~/.ssh/id_rsa)
+
+
+### -------------------------- SSH GITHUB ---------------------------
 $ ls -al ~/.ssh   // to check ssh list in pc
 $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"   // to generating ssh command
 $ cat ~/.ssh/id_rsa.pub     // To display the content of your SSH public key
