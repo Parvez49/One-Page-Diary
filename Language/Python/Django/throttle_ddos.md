@@ -45,4 +45,38 @@ class PaymentView(APIView):
         pass
 ```
 
-Note:  If we set Throttle in settings.py, all views will apply the default throttle rates for both anonymous and authenticated users. If a view does not require these throttle classes, you must manually override them by setting: throttle_classes = []
+Note:  
+  - If we set Throttle in settings.py, all views will apply the default throttle rates for both anonymous and authenticated users. If a view does not require these throttle classes, you must manually override them by setting: throttle_classes = []
+  - 'anon': '100/hour', this is all anoynomus user not ip restricted. This makes API unusable under normal conditions. To solve this issue we may use IpBased approach.
+    ```
+       # middleware.py
+        from django.http import HttpResponseForbidden
+        from django.core.cache import cache
+        
+        class IPBasedRateLimiter:
+            def __init__(self, get_response):
+                self.get_response = get_response
+                
+            def __call__(self, request):
+                ip = request.META.get('REMOTE_ADDR')
+                cache_key = f'rate_limit:{ip}'
+                
+                # Get current count
+                count = cache.get(cache_key, 0)
+                
+                # If over limit, block request
+                if count > 100:  # 100 requests/minute
+                    return HttpResponseForbidden("Rate limit exceeded")
+                    
+                # Increment count
+                cache.set(cache_key, count+1, timeout=60)
+                
+                return self.get_response(request)
+
+    # settings.py
+    MIDDLEWARE = [
+        ...
+        'myapp.middleware.IPBasedRateLimiter',
+    ]
+    ```
+ - We may avoid middleware since this is global settings. so all api will be affectted
