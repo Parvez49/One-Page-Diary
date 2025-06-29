@@ -1,4 +1,4 @@
-## DDoS Attach
+## DDoS Attack
     A DDoS (Distributed Denial of Service) attack is a malicious attempt to disrupt the normal traffic of a targeted server, service, or network by overwhelming it with a flood of internet traffic from multiple sources. 
     Unlike a DoS (Denial of Service) attack, which comes from a single source, a DDoS attack uses thousands or millions of compromised devices (botnets) to launch a coordinated attack.
 
