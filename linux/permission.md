@@ -1,8 +1,16 @@
-
-### Use the ls -l command to see file permissions:
+### Command to see file permissions:
 ```commandline
 ls -l filename
    -rw-r--r-- 1 parvez users  1234 Jan 31 12:00 myfile.txt
+```
+
+### 1. Structure of Permission Strings
+  Each permission string consists of 10 characters:
+```
+   Type  Owner   Group   Others
+   -     r w x   r - x   r - x
+   d     r w x   r - x   r - x
+   -     r w -   r - -   r - -
 ```
 
 ### Changing File Permissions (chmod)
