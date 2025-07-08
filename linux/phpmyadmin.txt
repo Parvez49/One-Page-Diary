@@ -1,8 +1,0 @@
-
-sudo chown -R www-data:www-data /usr/share/phpmyadmin
-
-# phpmyadmin user password set
-
-mysql> CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY 'your_password';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
-mysql> FLUSH PRIVILEGES;

@@ -1,4 +1,11 @@
-####clear screen: cls
+## cat
+  - cat stands for concatenate — it is a standard Unix command used to display or combine file contents.
+  - It reads files from start to finish, and prints their contents to the standard output
+  - Example:
+	- cat file.txt -> This reads file.txt and prints its content to the screen.
+	- cat file1 file2 -> Concatenates two files and prints output.
+	- cat > file.txt  -> Takes input from keyboard and saves to file.
+	- cat (no args)	  -> Reads input from keyboard (stdin)
 
 --------Folder and file control-----------
 ####go to specific directory: cd (directory) ex:cd desktop
