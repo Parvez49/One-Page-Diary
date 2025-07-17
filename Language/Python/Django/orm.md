@@ -134,6 +134,33 @@ Product.objects.filter(id=OuterRef('id')).update(
 
 ```
 
+# ManyToMany Relationship:
+ManyToManyField is used when multiple records in one model can relate to multiple records in another.
+```
+class Media(models.Model):
+    title = models.CharField(max_length=200)
+    phash = models.CharField(max_length=64, null=True, blank=True)
+
+class Incident(models.Model):
+    media = models.ManyToManyField(Media, related_name='incidents')
+```
+Django creates a hidden intermediary table to manage the relationship.
+  - Forward Access (default):
+    - incident = Incident.objects.get(id=1)
+    - incident.media.all()  # Get all media linked to this incident
+  - Reverse Access (using related_name):
+    - media = Media.objects.get(id=1)
+    - media.incidents.all()  # Get all incidents linked to this media
+  -  Filtering Queries:
+    - Incident.objects.filter(media__phash__isnull=False)
+    - Media.objects.filter(incidents__date__year=2024)
+  - Using the through Table:
+    - Use .through to access the intermediary table. Enables fine-grained control and filtering on join-level data.
+    - Incident.media.through.objects.filter(media__phash__isnull=False)
+  - Blocking Reverse Access
+    - media = models.ManyToManyField(Media, related_name='+')
+    - related_name='+' disables reverse access (media.incident_set won’t work).
+    - Still allows .through queries.
 
 ## Database Transactions
  Atomic Transactions: Use django.db.transaction.atomic to manage database transactions. This ensures that either all or none of the changes in a block of code are committed to the database.
