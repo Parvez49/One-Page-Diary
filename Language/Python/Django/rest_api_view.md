@@ -31,3 +31,7 @@
     - data-detail	/graffities/<pk>/	GET, PUT, DELETE
     - Use in reverse: from django.urls import reverse; reverse('v1:graffities-list')
     - Use in template: {% url 'v1:graffities-detail' pk=1 %}
+
+
+### Django Filter
+  - 
