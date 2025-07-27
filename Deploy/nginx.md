@@ -9,6 +9,15 @@
     - Caching Mechanism: Reduces backend load.
     - WebSocket Support: Suitable for real-time applications.
 
+### Nginx Directory Structure:
+- /etc/nginx/
+  - nginx.conf              # Main configuration file, Entry point for all config. Contains: http block, include directives, logging, worker processes, global settings etc.
+  - sites-available/        # Stores all virtual host configuration files for domains. These configs are inactive by default — to activate one, must symlink it into sites-enabled/.
+  - sites-enabled/          # Active Virtual Hosts, Holds symbolic links to active site configs from sites-available/.
+  - conf.d/                  # Other conf files (auto-included by nginx.conf) Global Configuration Fragments: Global logging rules, Caching configurations, Load balancing pools, SSL settings.
+  - snippets/                # Reusable config parts, Store partial configuration files that can be reused in multiple server blocks or locations.
+
+
 ### 3. how does Nginx differ from Apache?
 Nginx (Event-Driven Architecture)
 - Nginx operates with a single worker process (or multiple workers if configured).
