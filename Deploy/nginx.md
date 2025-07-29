@@ -17,7 +17,63 @@
   - conf.d/                  # Other conf files (auto-included by nginx.conf) Global Configuration Fragments: Global logging rules, Caching configurations, Load balancing pools, SSL settings.
   - snippets/                # Reusable config parts, Store partial configuration files that can be reused in multiple server blocks or locations.
 
+### Domain Configuration
+- Create Nginx config file
+  - sudo nano /etc/nginx/sites-available/domain.com
+    ```
+      upstream proxy_block {
+          server localhost:3001;
+          keepalive 64;
+      }
+      
+      server {
+          server_name <domain.com>;
+      
+          location / {
+              proxy_pass http://proxy_block;
+      
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+      
+              proxy_redirect off;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Host $server_name;
+          }
+      
+          listen 443 ssl; # managed by Certbot
+          ssl_certificate /etc/letsencrypt/live/<domain.com>/fullchain.pem; # managed by Certbot
+          ssl_certificate_key /etc/letsencrypt/live/<domain.com>/privkey.pem; # managed by Certbot
+          include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+          ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+      
+      }
+      
+      server {
+          if ($host = <domain.com>) {
+              return 301 https://$host$request_uri;
+          } # managed by Certbot
+      
+      
+          listen 80;
+          server_name <domain.com>;
+          return 404; # managed by Certbot
+      
+      
+      }
 
+    ```
+ - Enable the config: ln -s /etc/nginx/sites-available/domain.com /etc/nginx/sites-enabled/
+ - Test and reload Nginx: sudo nginx -t & sudo systemctl reload nginx
+ - Stop a Running Domain:
+   ```
+     sudo rm /etc/nginx/sites-enabled/mydomain.com
+     sudo nginx -t & sudo systemctl reload nginx
+   ```
+   
 ### 3. how does Nginx differ from Apache?
 Nginx (Event-Driven Architecture)
 - Nginx operates with a single worker process (or multiple workers if configured).
