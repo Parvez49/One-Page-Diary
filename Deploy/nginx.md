@@ -100,7 +100,7 @@
   - 10m: shared memory for storing metadata
   - 100m: max disk cache size
   - 60m: how long to keep unused cache
-    
+
 - Step 2: Enable caching in http block
   - /etc/nginx/nginx.conf
     ```
@@ -137,6 +137,44 @@
           add_header X-Cache-Status $upstream_cache_status;
       }
     ```
+- Step 4: Include in server block, /etc/nginx/sites-available/api.domain.com 
+  ```
+  	server {
+	    server_name api.bangladesh2024.info;
+	
+	    location = /favicon.ico { access_log off; log_not_found off; }
+	    location /static/ {
+		alias /opt/Archive2024-Backend/staticfiles/;
+	    }
+	    location /media/ {
+		root /opt/Archive2024-Backend/archive2024;
+	    }
+	    
+	    include snippets/api_cache_list.conf;
+	
+	    location / {
+		include proxy_params;
+		proxy_pass http://unix:/run/gunicorn_archive2024.sock;
+	    }
+	
+	    listen 443 ssl; # managed by Certbot
+	    ssl_certificate /etc/letsencrypt/live/api.bangladesh2024.info/fullchain.pem; # managed by Certbot
+	    ssl_certificate_key /etc/letsencrypt/live/api.bangladesh2024.info/privkey.pem; # managed by Certbot
+	    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+	}
+	
+	server {
+	    if ($host = api.bangladesh2024.info) {
+		return 301 https://$host$request_uri;
+	    } # managed by Certbot
+	
+	
+	    listen 80;
+	    server_name api.bangladesh2024.info;
+	    return 404; # managed by Certbot
+	}
+  ```
     
 ### 3. how does Nginx differ from Apache?
 Nginx (Event-Driven Architecture)
