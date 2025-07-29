@@ -73,7 +73,71 @@
      sudo rm /etc/nginx/sites-enabled/mydomain.com
      sudo nginx -t & sudo systemctl reload nginx
    ```
+
+ - Load Balancing: Nginx forwards requests to multiple backend servers (e.g., on different ports or hosts) in a round-robin or other strategy.
+   ```
+     upstream app_servers {
+        server 127.0.0.1:3001;
+        server 127.0.0.1:3002;
+    }
+    
+    server {
+        location / {
+            proxy_pass http://app_servers;
+        }
+    }
    
+   defining multiple server lines in an upstream block is called load balancing.
+   ```
+
+### Nginx Caching (to cache backend API responses)
+- Step 1: Define cache path
+  ```
+    /etc/nginx/conf.d/cache.conf
+    proxy_cache_path /var/cache/nginx/api_cache_dir levels=1:2 keys_zone=api_cache:10m max_size=10m inactive=120m use_temp_path=off;
+  ```
+  - api_cache: name of cache zone
+  - 10m: shared memory for storing metadata
+  - 100m: max disk cache size
+  - 60m: how long to keep unused cache
+    
+- Step 2: Enable caching in http block
+  - /etc/nginx/nginx.conf
+    ```
+      ...
+      map $arg_page $no_cache {
+          1 0;
+          2 0;
+          3 0;
+          4 0;
+          5 0;
+          default 1;
+        }
+
+	    include /etc/nginx/conf.d/*.conf;
+      include /etc/nginx/sites-enabled/*;
+      ...
+    ```
+- Step 3: Configuration api for caching
+  - etc/nginx/snippets$ cat api_cache_list.conf
+    ```
+      location ^~ /api/incidents/v1/incidents/ {
+          proxy_cache api_cache;
+          proxy_cache_valid 200 0s;
+          proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+          
+          proxy_pass http://unix:/run/gunicorn_archive2024.sock;
+          include proxy_params;
+      
+          proxy_cache_key "$scheme$host$request_uri$is_args$args";
+      
+          proxy_no_cache $no_cache;
+          proxy_cache_bypass $no_cache;
+      
+          add_header X-Cache-Status $upstream_cache_status;
+      }
+    ```
+    
 ### 3. how does Nginx differ from Apache?
 Nginx (Event-Driven Architecture)
 - Nginx operates with a single worker process (or multiple workers if configured).
