@@ -16,3 +16,110 @@ func main() {
 - Import packages
 - Functions
 - Statements and expressions
+
+### variable and data type
+- variable declaration: var variablename type = value,  variablename := value
+- var a string, var b int, var c bool, all has default value initially '', 0, false
+- var Can be used inside and outside of functions, := Can only be used inside functions.
+- const CONSTNAME type = value
+- default int size base on pc architecture 32 or 64 bit.
+- singned int: int8, int16, int32, int64; unsigned int: uint8, uint16, uint32, uint64;
+- float has two keywords: fload32, fload64, default float64
+- array: var array_name = [length]datatype{values}, array_name := [...]datatype{values}
+- Slices:
+  - slice_name := []datatype{values}, slice can grow and shrink
+  - var myarray = [length]datatype{values}; myslice := myarray[start:end]
+  - slice_name := make([]type, length, capacity), If the capacity parameter is not defined, it will be equal to length.
+  - slice_name = append(slice_name, element1, element2, ...), append elements to the end of a slice
+  - slice3 = append(slice1, slice2...), Append One Slice To Another Slice
+
+### print
+- Print() function prints its arguments with their default format.
+- Println() added whitespace between the arguments and new line is added at the end.
+- Printf() function first formats its argument: fmt.Printf("i has value: %v and type: %T\n", i, i)
+- %% 	Prints the % sign
+- %#v 	Prints the value in Go-syntax format
+- other fomatting: https://www.w3schools.com/go/go_formatting_verbs.php
+
+### Condition and loop
+- condition
+  ```
+  if condition1 {
+     // code to be executed if condition1 is true
+  } else if condition2 {
+     // code to be executed if condition1 is false and condition2 is true
+  } else {
+     // code to be executed if condition1 and condition2 are both false
+  }
+  ```
+
+- loop
+   ```
+  for statement1; statement2; statement3 {
+     // code to be executed for each iteration
+  }
+  for i:=0; i < 5; i++ {
+    fmt.Println(i)
+  }
+  ```
+- loop range
+  ```
+  for index, value := range array|slice|map {
+     // code to be executed for each iteration
+  }
+  fruits := [3]string{"apple", "orange", "banana"}
+  for idx, val := range fruits {
+     fmt.Printf("%v\t%v\n", idx, val)
+  }
+  ```
+
+### function
+- ```
+  func FunctionName() {
+    // code to be executed
+  }
+  ```
+- with parameters
+  ```
+  func FunctionName(param1 type, param2 type, param3 type) {
+    // code to be executed
+  }
+  ```
+- with return
+  ```
+  func FunctionName(param1 type, param2 type) type {
+    // code to be executed
+    return output
+  }
+  // named return value
+  func myFunction(x int, y int) (result int) {
+    result = x + y
+    return
+  }
+  func myFunction(x int, y string) (result int, txt1 string) {
+    result = x + x
+    txt1 = y + " World!"
+    return
+  }
+
+  ```
+
+### Structures
+- ```
+  type struct_name struct {
+    member1 datatype;
+    member2 datatype;
+    member3 datatype;
+    ...
+  }
+
+  var obj1 struct_name
+  obj1.member1 = <value>
+  ```
+
+  ### Maps
+  ```
+  var a = map[KeyType]ValueType{key1:value1, key2:value2,...}
+  b := map[KeyType]ValueType{key1:value1, key2:value2,...}
+
+  ```
