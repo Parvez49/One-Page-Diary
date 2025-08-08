@@ -123,3 +123,43 @@ func main() {
   b := map[KeyType]ValueType{key1:value1, key2:value2,...}
 
   ```
+
+  # Examples
+  - Make Package initialization: go mod init <app_name>
+  - Structure, Methods, Composition(Instead of Inheritance)
+    ```
+    type Address struct {
+        City    string
+        Country string
+    }
+    
+    type User struct {
+        Name    string
+        Age     int
+        Email   string
+        Address // embedded
+    }
+    // Method with value receiver
+    func (u User) Display() {
+        fmt.Println("----- User Profile -----")
+        fmt.Println("Name:", u.Name)
+        fmt.Println("Age:", u.Age)
+        fmt.Println("Email:", u.Email)
+        fmt.Println("Location:", u.City, "-", u.Country)
+    }
+    // Method with value receiver
+    func (u User) IsAdult() bool {
+        return u.Age >= 18
+    }
+    u := User{
+            Name:  "Parvez Hossen",
+            Age:   24,
+            Email: "ph.cse.bd@gmail.com",
+            Address: Address{
+                City:    "Cumilla",
+                Country: "Bangladesh",
+            },
+        }
+
+    u.Display()
+    ```
