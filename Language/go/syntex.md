@@ -163,3 +163,84 @@ func main() {
 
     u.Display()
     ```
+  - Interfaces & Polymorphism
+    - An interface is a type that defines a set of method signatures.
+    - Intefaces similar with python abstract method.
+    ```
+    type Notifier interface {
+        Notify() string
+    }
+    
+    type Email struct {
+        Address string
+    }
+    
+    func (e Email) Notify() string {
+        return "Sending email to " + e.Address
+    }
+    
+    type SMS struct {
+        Number string
+    }
+    
+    func (s SMS) Notify() string {
+        return "Sending SMS to " + s.Number
+    }
+    
+    func sendNotification(n Notifier) {
+        fmt.Println(n.Notify())
+    }
+    
+    func main() {
+        e := Email{Address: "parvez@example.com"}
+        s := SMS{Number: "0123456789"}
+    
+        sendNotification(e)
+        sendNotification(s)
+    }
+
+    ```
+
+  - Goroutines (Concurrency)
+    - Concurrency:  managing multiple tasks at one core or thread.
+    - Parallelism:  managing multiple tasks at the same exact time (requires multiple CPU cores).
+    - lightweight thread managed by the Go runtime.
+    ```
+    package main
+    
+    import (
+    	"fmt"
+    	"sync"
+    	"time"
+    )
+    
+    func sendEmail(wg *sync.WaitGroup, to string) {
+    	defer wg.Done()
+    	time.Sleep(2 * time.Second)
+    	fmt.Println("📧 Email sent to:", to)
+    }
+    
+    func sendSMS(wg *sync.WaitGroup, number string) {
+    	defer wg.Done()
+    	time.Sleep(1 * time.Second)
+    	fmt.Println("📱 SMS sent to:", number)
+    }
+    
+    func main() {
+    	var wg sync.WaitGroup
+    	wg.Add(2) // We have 2 goroutines to wait for
+    
+    	go sendEmail(&wg, "parvez@example.com")
+    	go sendSMS(&wg, "+8801568079422")
+    
+    	fmt.Println("✅ Sending notifications...")
+    	wg.Wait() // Wait for both goroutines to finish
+    	fmt.Println("🎉 All notifications sent!")
+    }
+
+    ```
+
+- Channels
+  - A channel is a typed conduit through which goroutines can send and receive values between goroutines.
+  - They provide safe communication and synchronization between concurrent goroutines.
+  - 
