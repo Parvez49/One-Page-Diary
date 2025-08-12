@@ -117,14 +117,21 @@ func main() {
   obj1.member1 = <value>
   ```
 
-  ### Maps
+### Maps
   ```
   var a = map[KeyType]ValueType{key1:value1, key2:value2,...}
   b := map[KeyType]ValueType{key1:value1, key2:value2,...}
-
   ```
 
-  # Examples
+
+### Keywords
+- Select: Multi-channel control.
+- Defer: schedule something to run at the very end of a function’s execution.
+- Panic: stops the normal execution of a program .
+- Recover: back control after a panic and continue running.
+  
+
+# Examples
   - Make Package initialization: go mod init <app_name>
   - Structure, Methods, Composition(Instead of Inheritance)
     ```
@@ -243,4 +250,76 @@ func main() {
 - Channels
   - A channel is a typed conduit through which goroutines can send and receive values between goroutines.
   - They provide safe communication and synchronization between concurrent goroutines.
-  - 
+  ```
+  package main
+  
+  import (
+  	"fmt"
+  	"time"
+  )
+  
+  func main() {
+  	tempChan := make(chan string)
+  	humChan := make(chan string)
+  
+  	defer fmt.Println("Shutting down IoT processor...")
+  
+  	// Simulate sensors
+  	go func() {
+  		time.Sleep(1 * time.Second)
+  		tempChan <- "Temperature: 28°C"
+  	}()
+  
+  	go func() {
+  		time.Sleep(3 * time.Second)
+  		humChan <- "Humidity: 65%"
+  	}()
+  
+  	defer func() {
+  		if r := recover(); r != nil {
+  			fmt.Println("Error handled:", r)
+  		}
+  	}()
+  
+  	select {
+  	case temp := <-tempChan:
+  		fmt.Println("Received:", temp)
+  	case hum := <-humChan:
+  		fmt.Println("Received:", hum)
+  	case <-time.After(2 * time.Second):
+  		panic("Sensor timeout!")
+  	}
+  
+  	fmt.Println("Processing complete.")
+  }
+
+  ```
+
+### Handles Errors
+- Go doesn’t have exceptions
+- errors are values of type error.
+  ```
+  package main
+  
+  import (
+  	"errors"
+  	"fmt"
+  )
+  
+  func divide(a, b float64) (float64, error) {
+  	if b == 0 {
+  		return 0, errors.New("cannot divide by zero")
+  	}
+  	return a / b, nil
+  }
+  
+  func main() {
+  	result, err := divide(10, 0)
+  	if err != nil {
+  		fmt.Println("Error:", err)
+  		return
+  	}
+  	fmt.Println("Result:", result)
+  }
+
+  ```
