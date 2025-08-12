@@ -40,12 +40,12 @@
 ```
 
 ### To restore a file:
-$ git restore <file>    // Restore a file from the last commit
-$ git restore .         // Restore all changes from the last commit
+- $ git restore <file>    // Restore a file from the last commit
+- $ git restore .         // Restore all changes from the last commit
 
 ### To remove a file: 
-$ git rm ph.py (if we delete file by using git command then file will be deleted from both directory and git stage)
-$ git rm --cached <file_name>    // to remove files from the working directory and the staging area.
+- $ git rm ph.py (if we delete file by using git command then file will be deleted from both directory and git stage)
+- $ git rm --cached <file_name>    // to remove files from the working directory and the staging area.
 
 version control(if we add two or more commit then we think that our previous version or commit was better than last commit)
 ####To control version: git checkout (id) ph.py (id means whice version we want)
@@ -158,5 +158,16 @@ A --- B --- C --- D --- F'  (main)
 ```
 
 
-
+### 10. git reflog
+- Why reset?
+  - Used to undo commits, roll back to earlier points, or drop unwanted history (locally).
+  - git reset --hard <commit-hash>
+- Why reflog?
+  - recover commits after reset, rebase, or other history changes — even if they’re not in git log.
+  - git reflog: Shows a log of where HEAD and branch refs have been — includes commits that are no longer in normal git log.
+  - git reflog show --all
+- Deleting from reflog
+  - To erase commits completely (security reasons):
+  - git reflog expire --expire=now --all
+  - git gc --prune=now --aggressive
 
