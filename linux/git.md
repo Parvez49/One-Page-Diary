@@ -166,6 +166,16 @@ A --- B --- C --- D --- F'  (main)
   - recover commits after reset, rebase, or other history changes — even if they’re not in git log.
   - git reflog: Shows a log of where HEAD and branch refs have been — includes commits that are no longer in normal git log.
   - git reflog show --all
+- Recovery from reflog 
+  - git reflog 
+  ```
+    abc1234 HEAD@{0}: reset: moving to abc1234
+    def5678 HEAD@{1}: commit: Added feature X
+  ```
+  - git reset --hard def5678
+  - git checkout -b recovery-branch def5678
+  - Note: Recovery not possible if commit delete from reflog
+
 - Deleting from reflog
   - To erase commits completely (security reasons):
   - git reflog expire --expire=now --all
