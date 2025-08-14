@@ -148,3 +148,49 @@ li=['p','a','r',0,1,2,3,4]
 ```
 ##Difference strip() and split(): strip() is used to removed specefic character from strin. its may be whitespace, character, symbol etc
 				  split() is to make sub string list break a string
+
+
+## Descriptor
+- A descriptor is any object that defines one or more of the methods __get__, __set__, __delete__, __set_name__.
+- Adescriptor object describes how another object’s attribute should behave when read, write, or delete it.
+- ```
+  class PositiveNumber:
+    def __set_name__(self, owner, name):
+        self.name = name
+
+    def __get__(self, instance, owner):
+        return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        if value < 0:
+            raise ValueError(f"{self.name} must be positive")
+        instance.__dict__[self.name] = value
+	
+	
+	class BankAccount:
+	    balance = PositiveNumber()  # Descriptor handles validation
+	
+	    def __init__(self, balance):
+	        self.balance = balance
+
+  	class Product:
+	    price = PositiveNumber()
+	
+	class Employee:
+	    salary = PositiveNumber()
+	
+		
+	
+	acct = BankAccount(100)
+	acct.balance = 200   # Works
+	# acct.balance = -50  # Raises ValueError automatically
+
+	```
+- One descriptor can be used in multiple classes without rewriting logic.
+- __get__(self, instance, owner): Called when the attribute is accessed acct.balance
+- __set__(self, instance, value): Called when the attribute is assigned acct.balance = 200
+- Types of Descriptors
+  - Data Descriptor: Implements __set__ or __delete__ → overrides instance dictionary
+  - Non-data Descriptor: Only implements __get__ → like @property without setter
+ 
+
