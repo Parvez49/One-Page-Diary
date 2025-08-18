@@ -20,11 +20,21 @@
   $ groups <user_name>           -> verify groups list
 
   $ sudo userdel <user_name>     -> does not delete the user's home directory or files
-  $ sudo userdel -r <user_name>  -> delete the user's home directory or files
-  
-
-  
+  $ sudo userdel -r <user_name>  -> delete the user's home directory or files  
 ```
+
+### User Groups
+types of group
+- Primary group: each user’s primary group has the same name as the user.
+- Secondary group: A user can belong to multiple secondary groups.
+- ```
+    $ sudo groupadd <groupname>  // To create a group
+    $ sudo usermod -aG <groupname> <username>  // To add a user to a group
+    $ groups <username>  // To see which groups a user belongs to
+    $ sudo deluser <username> <groupname>  // To remove a user from a group
+
+  ```
+
 ### File System in Linux:
 ---
 The top directory is /.
