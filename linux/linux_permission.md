@@ -65,4 +65,3 @@ There are main two ways to set permissions:
 ---
 - chgrp [new_group] <file_or_directory>  -> (file or directory belong to a single group at a time)
 - chgrp <group> myfile.txt
-
