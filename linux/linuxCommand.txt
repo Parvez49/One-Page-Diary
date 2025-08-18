@@ -6,14 +6,12 @@ $ whoami           // gives current user name
 $ sudo deluser <username> <group_name>    // Only remove username from the group_name
 
 
-### Create a Regular User
-$ sudo adduser <username>
-$ id <username>        // Verify the user
-$ groups <username>    // Verify groups list
-$ 
-
-
-
+### Directory Management
+---
+```
+  $ cd /         -> Root of the whole system
+  $ cd ~         -> personal home directory (/home/<user_name>/)
+```
 
 
 #### To open vscode editor using git command:code .
