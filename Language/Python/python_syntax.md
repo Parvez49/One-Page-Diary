@@ -1,5 +1,38 @@
 ### Python code execution
- code -> compile to bytecode(.pyc) -> interprete machine code and run
+- Python source code
+  ```
+	# hello.py
+	print('hello world!')
+  ```
+- Calls the Python interpreter: python hello.py. Sends source file to interpreter(CPython).
+- CPython reads the file
+  - The interpreter opens hello.py and reads the text.
+  - It converts the text into an Abstract Syntax Tree (AST).
+  - Example for print('hello world!')
+    ```
+		Module
+		  Expr
+		    Call
+		      Name: print
+		      Args: Constant: 'hello world'
+    ```
+- Compilation to bytecode: CPython compiles the AST into bytecode, which is a lower-level, platform-independent representation of code.
+- Bytecode is something like:
+  ```
+	LOAD_NAME                'print'
+	LOAD_CONST               'hello world'
+	CALL_FUNCTION            1
+	POP_TOP
+  ```
+  - This bytecode can be stored as a .pyc file (in __pycache__) for faster execution next time.
+    
+- Execution by the Python Virtual Machine (PVM)
+  - CPython has a virtual machine (interpreter loop) called PVM.
+  - The PVM executes bytecode instruction by instruction.
+    - LOAD_NAME 'print' → load the print function into memory
+    - LOAD_CONST 'hello world' → load the string
+    - CALL_FUNCTION 1 → call print('hello world')
+    - POP_TOP → remove the result from the stack
 
 ### Closure in Python
 closure is a function object that remembers values in enclosing scopes even if those scopes are no longer present in memory.
