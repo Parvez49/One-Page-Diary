@@ -226,4 +226,12 @@ li=['p','a','r',0,1,2,3,4]
   - Data Descriptor: Implements __set__ or __delete__ → overrides instance dictionary
   - Non-data Descriptor: Only implements __get__ → like @property without setter
  
+## Multiprocessing
+- Process → independent unit of execution (separate memory space). It uses it's own interpreter.
+- Perfect for CPU-bound tasks (data crunching, data processing)
+- Key Keyword of multiprocessing
+  - Process:
+  - Pool:
+  - IPC(Inter-Process Communication):
+  - Synchronization 
 
