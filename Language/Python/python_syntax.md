@@ -227,11 +227,177 @@ li=['p','a','r',0,1,2,3,4]
   - Non-data Descriptor: Only implements __get__ → like @property without setter
  
 ## Multiprocessing
-- Process → independent unit of execution (separate memory space). It uses it's own interpreter.
 - Perfect for CPU-bound tasks (data crunching, data processing)
 - Key Keyword of multiprocessing
-  - Process:
-  - Pool:
+  - Process: independent unit of execution (separate memory space). It uses it's own interpreter.
+  - Pool: Pool manages a pool of worker processes. Instead of manually creating processes, it distributes tasks to the pool.
   - IPC(Inter-Process Communication):
-  - Synchronization 
+    - Queue: A process-safe FIFO queue. One process can put(), another can get().
+    - Pipe: Direct communication channel between two processes.
+    - Manager: Provide shared objects like Lists, Dicts etc. 
+  - Synchronization:
+    - When multiple processes shared modify shared data, then may arise race condition. Synchronization primitives help control access.
+    - Lock: Ensure only process can access at a time can access a resource.
+    - Event: Acts like a flag between processes.
+    - Semaphore: Limits the number of processes accessing a resource at once.
 
+<table>
+  <tr>
+    <td>
+
+### Multiprocessing Example
+```
+from multiprocessing import Pool, Queue, Manager, Lock, Event, Semaphore, Process
+import os, time, random
+
+# ------------ Worker Function ----------------
+def analyze_file(file_path, queue, shared_dict, lock, sem, done_event):
+	with sem:  # limit number of workers at once
+		with open(file_path, "r") as f:
+			errors = sum(1 for line in f if "ERROR" in line)
+
+		# Put result into queue (IPC)
+		queue.put((file_path, errors))
+
+		# Update shared dict (Manager)
+		shared_dict[file_path] = errors
+
+		# Use Lock for clean printing
+		with lock:
+			print(f"[PID {os.getpid()}] {file_path}: {errors} errors found")
+
+		# Simulate work
+		time.sleep(random.randint(1, 3))
+
+	# Notify via Event (when last worker finishes)
+	if len(shared_dict) == shared_dict["total"]:
+		done_event.set()
+
+
+# ------------ Main Program ----------------
+if __name__ == "__main__":
+	# Setup
+	log_files = ["logs1.txt", "logs2.txt", "logs3.txt", "logs4.txt"]
+
+	queue = Queue()
+	manager = Manager()
+	lock = Lock()
+	sem = Semaphore(2)   # allow 2 workers at once
+	done_event = Event()
+
+	shared_dict = manager.dict()
+	shared_dict["total"] = len(log_files)
+
+	# Pool of workers
+	pool = Pool(processes=4)
+	for file in log_files:
+		pool.apply_async(analyze_file, args=(file, queue, shared_dict, lock, sem, done_event))
+
+	pool.close()
+	pool.join()
+
+	# Wait for event signal
+	done_event.wait()
+
+	# Collect results from queue
+	results = []
+	while not queue.empty():
+		results.append(queue.get())
+
+	print("\nFinal Results:", dict(results))
+```
+
+</td>
+<td>
+
+### Program flow
+```
+IDE (hello.py)
+   │
+   ▼
+Python Interpreter
+   │
+   │  main process (PID 1001)
+   │  └─ runs __main__ block
+   │
+   ▼
+Process Creation
+   │
+   ├── Process A (PID 1002)  ──> executes target function
+   ├── Process B (PID 1003)  ──> executes target function
+   └── Process C (PID 1004)  ──> executes target function
+   │
+   ▼
+Pool (optional)
+   │  Instead of manually creating processes,
+   │  Pool creates & manages N worker processes.
+   │  Tasks are submitted, Pool distributes them.
+   │
+   ▼
+IPC (Inter-Process Communication)
+   │
+   ├── Queue  → many-to-many messaging
+   ├── Pipe   → 1-to-1 direct communication
+   └── Manager → shared dict/list across processes
+   │
+   ▼
+Synchronization (if needed)
+   │
+   ├── Lock       → ensures one process at a time modifies data
+   ├── Event      → acts like a flag (wait/set)
+   └── Semaphore  → limits number of concurrent processes
+   │
+   ▼
+CPU Execution
+   │
+   └─ Each process has its own Python interpreter
+       and executes in parallel on multiple CPU cores.
+
+```
+
+</td>
+  </tr>
+</table>
+
+## Threading
+- allows you to run multiple tasks (threads) within the same process, so tasks can run concurrently.
+- Each thread shares the same memory space
+- one thread executes Python bytecode at a time in CPython because of the Global Interpreter Lock (GIL).
+- threading is useful for I/O-bound tasks (like network calls, file read/write, DB queries) because while one thread waits, another can run.
+- I/O Bound tasks: Downloading multiple files, Handling multiple web requests, Reading/writing files concurrently
+```
+import threading
+import time
+import requests
+
+def download_page(url):
+    print(f"Starting download: {url}")
+    response = requests.get(url)
+    print(f"Finished download: {url} - size: {len(response.text)}")
+
+def main():
+    urls = [
+        "https://example.com",
+        "https://httpbin.org/delay/3",  # simulates 3s delay
+        "https://httpbin.org/delay/2"
+    ]
+
+    threads = []
+    start = time.time()
+
+    for url in urls:
+        t = threading.Thread(target=download_page, args=(url,))
+        threads.append(t)
+        t.start()
+
+    # Wait for all threads to finish
+    for t in threads:
+        t.join()
+
+    end = time.time()
+    print(f"Total time taken: {end - start:.2f} seconds")
+
+if __name__ == "__main__":
+    main()
+
+```
