@@ -364,7 +364,8 @@ CPU Execution
 - Each thread shares the same memory space
 - one thread executes Python bytecode at a time in CPython because of the Global Interpreter Lock (GIL).
 - threading is useful for I/O-bound tasks (like network calls, file read/write, DB queries) because while one thread waits, another can run.
-- I/O Bound tasks: Downloading multiple files, Handling multiple web requests, Reading/writing files concurrently
+- I/O Bound tasks: Downloading multiple files, Handling multiple web requests, Reading/writing files concurrently.
+- OS-level abstraction (managed by the operating system).
 ```
 import threading
 import time
@@ -401,3 +402,26 @@ if __name__ == "__main__":
     main()
 
 ```
+
+## async I/O
+- User-level cooperative multitasking (single-threaded, event loop).
+- One thread, one process, but tasks yield control (await) when they’re waiting for I/O.
+- No parallel execution; instead, the event loop rapidly switches between coroutines.
+- ```
+	import asyncio, aiohttp
+
+	async def fetch(session, symbol):
+	    async with session.get(f"https://api.example.com/{symbol}") as resp:
+	        print(await resp.json())
+	
+	async def main():
+	    async with aiohttp.ClientSession() as session:
+	        tasks = [fetch(session, s) for s in ["AAPL", "GOOG", "TSLA"]]
+	        await asyncio.gather(*tasks)
+	
+	asyncio.run(main())
+
+  ```
+- 10–100 concurrent I/O tasks → threads are fine.
+- 10,000+ connections (chat server, proxies, scraping) → async I/O wins.
+- CPU-bound parallelism → neither threads nor async help → use multiprocessing.
