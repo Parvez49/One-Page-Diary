@@ -425,3 +425,7 @@ if __name__ == "__main__":
 - 10–100 concurrent I/O tasks → threads are fine.
 - 10,000+ connections (chat server, proxies, scraping) → async I/O wins.
 - CPU-bound parallelism → neither threads nor async help → use multiprocessing.
+
+### yield
+- Instead of returning all results at once (like return), yield produces one value at a time.
+- 
