@@ -428,4 +428,15 @@ if __name__ == "__main__":
 
 ### yield
 - Instead of returning all results at once (like return), yield produces one value at a time.
-- 
+- It creates a generator → a lazy iterable that only computes the next item when needed.
+- ```
+	 def read_large_file(path):
+	    with open(path, "r") as f:
+	        for line in f:
+	            yield line.strip()
+	
+	# Real-time use: log processing
+	for line in read_large_file("system.log"):
+	    if "ERROR" in line:
+	        print(line)
+	```
