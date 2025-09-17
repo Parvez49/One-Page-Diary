@@ -29,3 +29,17 @@ Sotution:
                 current_sum=0
         print(res)
 ```
+
+### GCD
+  GCD (Greatest Common Divisor) of two numbers is the largest number that divides both without leaving a remainder.
+- GCD(12, 18) = 6
+- Much faster because it reduces the size quickly.
+- Complexity: O(log(min(a, b))) — very efficient.
+```
+def gcd_euclidean(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+```
+
+
