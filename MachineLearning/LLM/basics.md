@@ -22,4 +22,12 @@
  Pretraining: training on large dataset, diverse dataset.
  Fineturing: training on narrower dataset, specific dataset.
 
+### Problem of LLM:
+- Limited context window
+- outdated knowledge base
+- data privacy
+- cost(machine resource)
+- No connection with third party
 
+
+  
