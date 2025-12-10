@@ -4,4 +4,4 @@
 
 ### LangGraph
 - LangGraph is a state machine + graph based workflow engine for LLMs, build on top of LangChain.
-- 
+- Deterministic graphs
