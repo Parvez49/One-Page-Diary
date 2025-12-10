@@ -1,0 +1,7 @@
+### LangChain Fundamentals
+- A general-purpose LLM Aplication framework for building: RAG pipeline, Chatbot, Tool-calling logic, Prompt templates, Document loader, Chain & Agents.
+
+
+### LangGraph
+- LangGraph is a state machine + graph based workflow engine for LLMs, build on top of LangChain.
+- 
