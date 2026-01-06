@@ -38,4 +38,23 @@ is a single unified codebase where all components of an application(UI, database
   - Database: A centralized database
   - All these layers within the same application and are deployed together.
 
+### System design Factors:
+- Network
+  - DNS Delay
+  - High latency
+  - Too many hops
+  - No CDN
+- Network Security
+  - JWT (app layer)
+  - Firewall
+  - Private subnet
+  - https lock
+  - ip restriction
+
+- What happens when url hit in browser
+  - https://www.example.com/products/123
+  - https: protocol
+  - www.example.com: domain
+  - /products/123: path
+  - 443 (default https): port
 
