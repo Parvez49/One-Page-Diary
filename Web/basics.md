@@ -1,0 +1,14 @@
+## HTTPS / SSL Certificate Flow
+- HTTPS = HTTP + TLS
+- Browser requests URL: https://example.com
+- TLS handshake starts (Transport Layer Security: is the security protocol that makes HTTPS secure)
+  - Browser asks for secure connection to server
+  - TLS = rules for creating an encrypted, authenticated connection between browser and server.
+- Server sends SSL certificate From Nginx / Load Balancer / Gunicorn
+- Browser verifies certificate: Trusted CA, Domain matches, Not expired / revoked, ❌ Fail → connection blocked
+- Secure tunnel established: Encryption keys agreed
+- HTTP request sent inside TLS: Encrypted data
+- Server decrypts request: SSL terminator (Nginx / Gunicorn)
+- Request forwarded to Django
+  -  Plain HTTP
+  -  Django → only processes HTTP logic, Django trusts server headers
