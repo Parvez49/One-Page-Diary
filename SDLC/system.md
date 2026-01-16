@@ -58,3 +58,44 @@ is a single unified codebase where all components of an application(UI, database
   - /products/123: path
   - 443 (default https): port
 
+### Examples of different types of software projects
+- SaaS (Software as a Service)
+  - Cloud-based software, subscription model(Subscription & billing), multi-tenant(many companies, same app)
+  - Slack, Notion, Zoom, Stripe
+  - A project management tool where companies create workspaces, manage teams, tasks, and pay monthly.
+- B2B (Business to Business)
+  - Software used by one business to serve another business
+  - AWS, Salesforce(CRM for companies),
+  - Company-based access (organization → users), Role-based permissions (Admin, Manager, Staff)
+- B2C (Business to Consumer)
+  - Software directly used by end users
+  - Facebook, Instagram, Netflix, Uber, Foodpanda
+  - High traffic, Real-time updates, Notifications, Performance optimization
+- ERP (Enterprise Resource Planning)
+  - Large internal system to manage company operations
+  - Odoo, Oracle NetSuite
+  - HR & Payroll, Inventory & Warehouse, Accounting & Finance, Sales & Purchase, Production
+- CRM (Customer Relationship Management)
+  - Focus on customer data and sales process
+  - Salesforce CRM
+  - Leads & contacts, Sales pipeline
+- FinTech
+  - Financial technology products
+  - Paypal, KYC, Transactions, High Security
+  - A digital wallet system with balance, transfers, and transaction history.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
