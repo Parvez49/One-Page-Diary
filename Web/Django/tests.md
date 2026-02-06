@@ -134,6 +134,7 @@ def test_notification_sent(mocker):
 Run the full test suite:
 ```
 pytest
+pytest -s  # see debug output
 ```
 Run tests with coverage:
 ```
