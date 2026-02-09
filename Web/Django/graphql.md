@@ -14,6 +14,7 @@
 ### Types
 - is used for read data
 - Expose the Django User model as a GraphQL type.
+- strawberry_django will automatically generate resolvers for relational fields.
 - ```
   @strawberry.django.type(User)
   class UserType:
