@@ -80,6 +80,7 @@ git push -u origin main
 ```
 
 ## git branch
+- Branches are pointers, not copies
 ```
 git checkout -b <branch_name>         // to create and move new branch
 git checkout --orphan <branch_name>   // to create empty commit new branch with existing files and folders.
@@ -101,7 +102,8 @@ $ git stash drop stash@{n} // Delete a specific stash
 ```
 
 ### 1. What is Git?
-Git is a distributed version control system (DVCS) that is used to track changes in source code.
+- Git is a distributed version control system (DVCS) that is used to track changes in source code.
+- A directed acyclic graph (DAG) of commits, Each commit points to parent commit(s) and is immutable.
 
 ### 2. What is origin in Git?
 In Git, "origin" states to the default name offered to the remote repository from which local repository was cloned. Git origin is used as a reference to control fetches, pulls, and pushes.
