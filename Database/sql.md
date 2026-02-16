@@ -48,16 +48,27 @@
        END AS category
     FROM employees;
   ```
-- Window functions
-  ```
-    // ROW_NUMBER / RANK / DENSE_RANK
-    SELECT name, salary,
-       DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk
-    FROM employees;
-
-    // LAG / LEAD
-    LAG(salary) OVER (ORDER BY date)
-  ```
+- Window functions: Compute aggregates and rankings across related rows while preserving the original row structure.
+  - ROW_NUMBER(): Assigns a unique sequential number to each row.
+  - RANK(): Assigns the same rank to equal values but leaves gaps.
+  - DENSE_RANK(): Assigns the same rank to equal values without gaps.
+  - ```
+      // ROW_NUMBER / RANK / DENSE_RANK
+      SELECT salary,
+         ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_number,
+         RANK() OVER (ORDER BY salary DESC) AS rank,
+         DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk
+      FROM employees;
+  
+      // LAG / LEAD
+      LAG(salary) OVER (ORDER BY date)
+    
+      salary row_number rank	dense_rank
+        300      1      	1       1
+        300	     2        1       1
+        200	     3        3       2
+        100	     4        4       3
+    ```
 - Set operation
   ```
     UNION        -- removes duplicates
