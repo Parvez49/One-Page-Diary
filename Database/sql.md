@@ -81,3 +81,5 @@
     CREATE INDEX idx_user_email ON users(email);
   ```
 
+### Some leetcode sql problems:
+- 
