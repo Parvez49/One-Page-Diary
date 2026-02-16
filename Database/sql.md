@@ -81,24 +81,6 @@
     CREATE INDEX idx_user_email ON users(email);
   ```
 
-### Some leetcode sql problems:
-- [Aggregate](https://leetcode.com/problems/find-total-time-spent-by-each-employee/)
-- [Distinct](https://leetcode.com/problems/daily-leads-and-partners/)
-- [String Operation](https://leetcode.com/problems/invalid-tweets/description/)
-- [Date](https://leetcode.com/problems/rising-temperature/description/)
-- [Pagination](https://leetcode.com/problems/second-highest-salary/)
-- [Nested Query](https://leetcode.com/problems/customers-who-never-order/)
-- [Capital Gain/Loss](https://leetcode.com/problems/capital-gainloss/)
-- [Union](https://leetcode.com/problems/rearrange-products-table/)
-- [Update](https://leetcode.com/problems/swap-sex-of-employees/)
-- [Delete](https://leetcode.com/problems/delete-duplicate-emails/)
-- [Left join](https://leetcode.com/problems/employee-bonus/description/)
-
-- Others
-  - [group by](https://leetcode.com/problems/the-latest-login-in-2020/)
-  - [join,group](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/)
-  - [String Upper Lower](https://leetcode.com/problems/fix-names-in-a-table/description/)
-  - 
-  
+### [Practice leetcode sql problems](https://leetcode.com/problem-list/wdplk2vm/)
   
 
