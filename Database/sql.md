@@ -82,4 +82,5 @@
   ```
 
 ### Some leetcode sql problems:
-- conditional logic: https://leetcode.com/problems/capital-gainloss/
+- [Capital Gain/Loss](https://leetcode.com/problems/capital-gainloss/)
+
