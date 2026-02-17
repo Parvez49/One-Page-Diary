@@ -59,15 +59,16 @@
          RANK() OVER (ORDER BY salary DESC) AS rank,
          DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk
       FROM employees;
-  
-      // LAG / LEAD
-      LAG(salary) OVER (ORDER BY date)
     
       salary row_number rank	dense_rank
         300      1      	1       1
         300	     2        1       1
         200	     3        3       2
         100	     4        4       3
+
+      // LAG / LEAD  # LAG: Look at previous rows, LEAD: Look at next rows
+      LAG(column, offset, default) OVER (ORDER BY column)
+      LEAD(column, offset, default) OVER (ORDER BY column)    
     ```
 - Set operation
   ```
