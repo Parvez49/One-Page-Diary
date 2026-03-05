@@ -10,6 +10,8 @@
     GET /orders/5/items
     ```
   - All queries go through one endpoint. Easier auth, Easier versioning, Easier gateway setup.
+  - No versioning needed
+  - 
   
 ### Types
 - is used for read data
@@ -21,4 +23,5 @@
       id: auto
       username: auto # Strawberry infers the field type from the Django model
   ```
-- 
+### Mutations 
+- Create, update, and delete operations 
