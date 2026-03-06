@@ -6,22 +6,86 @@ https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e
 https://medium.com/@audretschjames/understanding-docker-as-if-it-were-a-gameboy-96c96392efbf
 ```
 
-# Docker:
-     Docker Image: Like Class.
-     
-     Docker Container: Like Object of Class.
-     
-     Docker Daemon: is a persistent background process that manages Docker containers. It listens for Docker API requests and handles container lifecycle management, such as building, running, stopping, and removing containers.  The daemon is responsible for orchestrating the entire containerization process, including pulling container images from registries, creating container instances, managing their execution, and monitoring their resource usage.
-     
-     Docker Swarm: Manage docker Daemon.
+# Docker Basic Concepts
+- Docker Image: Like Class.
+## Docker Image
+- A **Docker Image** is like a **Class** in programming.
+- It is a **read-only template** used to create containers.
+- It contains everything needed to run an application:
+  - Code
+  - Runtime
+  - Libraries
+  - Environment variables
+  - Configuration files
+---
 
-     Dockerfile: allows you to document the steps to set up the environment for application. The Docker Engine will parse Dockerfile, and create a Docker Image from it.
-     
-     Mount: Mounting the host system into a container allows the container to read and write to the host system. Mounting allows you to modify files on your host machine while running them in the environment of a Docker container.
-     
-     Docker Volumes: are like Memory Cards. 
-     
-     Docker-Compose: Docker Compose coordinates containers to run together.
+## Docker Container
+- A **Docker Container** is like an **Object (Instance) of a Class**.
+- It is a **running instance of a Docker Image**.
+- Containers are:
+  - Isolated
+  - Lightweight
+  - Fast to start
+- Multiple containers can be created from the same image.
+
+---
+
+## Docker Daemon
+- The **Docker Daemon (`dockerd`)** is a **persistent background service**.
+- It manages all Docker operations.
+
+### Responsibilities
+- Listens for **Docker API requests**
+- Builds Docker images
+- Creates and runs containers
+- Stops and removes containers
+- Pulls images from registries (e.g., Docker Hub)
+- Monitors container resources
+
+In short, it **orchestrates the entire container lifecycle**.
+
+---
+
+## Docker Swarm
+- **Docker Swarm** is Docker's **native clustering and orchestration tool**.
+- It allows multiple Docker hosts to work together as a **single cluster**.
+
+### Features
+- Manages multiple **Docker daemons**
+- Provides **load balancing**
+- Handles **scaling containers**
+- Enables **high availability**
+
+---
+
+## Dockerfile
+A **Dockerfile** is a script containing instructions to build a Docker image.
+
+### Purpose
+It documents **how to set up the application environment**.
+
+### Example workflow
+1. Write a `Dockerfile`
+2. Docker Engine reads the file
+3. Docker builds an **image**
+4. Containers run from that image
+
+Example structure:
+
+```dockerfile
+FROM python:3.11
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+CMD ["python", "app.py"]
+```
+
+- Docker Daemon: is a persistent background process that manages Docker containers. It listens for Docker API requests and handles container lifecycle management, such as building, running, stopping, and removing containers.  The daemon is responsible for orchestrating the entire containerization process, including pulling container images from registries, creating container instances, managing their execution, and monitoring their resource usage.
+- Docker Swarm: Manage docker Daemon.
+- Dockerfile: allows you to document the steps to set up the environment for application. The Docker Engine will parse Dockerfile, and create a Docker Image from it.
+- Mount: Mounting the host system into a container allows the container to read and write to the host system. Mounting allows you to modify files on your host machine while running them in the environment of a Docker container.
+- Docker Volumes: are like Memory Cards. 
+- Docker-Compose: Docker Compose coordinates containers to run together.
      
 
 ```
