@@ -151,7 +151,14 @@ Used to manage multi-container applications.
 	docker inspect container_id    # Inspect container
 	docker images ls    # to show all images list
 	
-	
+# 11. Docker Security Best Practices
+- Avoid running as root
+- Add user to the Docker group
+  ```
+	sudo usermod -aG docker $USER
+	newgrp docker    # reload group permission
+  ```
+
 ---
 
 ## Docker Image
@@ -210,12 +217,16 @@ Think of them like external memory cards for containers.
 
 
 ### Docker useful Command:
-$ docker build -t image_name // to build image
-
-$ docker run -d -p 4000:80 --name docker-container-name image_name
-$ docker run -it ubuntu:14.04 /bin/bash 
-$ docker run -v <HOST_DIRECTORY>:<CONTAINER_DIRECTORY>
-$ docker run -it -v $(pwd):/mounted ubuntu:14.04 /bin/bash
+	docker system prune    # Clean unused resources
+	docker container prune    # Remove all stopped containers
+	docker image prune    # Remove unused images
+	docker system df    # Disk usage
+	$ docker build -t image_name // to build image
+	
+	$ docker run -d -p 4000:80 --name docker-container-name image_name
+	$ docker run -it ubuntu:14.04 /bin/bash 
+	$ docker run -v <HOST_DIRECTORY>:<CONTAINER_DIRECTORY>
+	$ docker run -it -v $(pwd):/mounted ubuntu:14.04 /bin/bash
 
 
 # Docker Volume:
