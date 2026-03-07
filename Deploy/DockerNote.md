@@ -1,11 +1,3 @@
-
-
-```
-https://dev.to/thedevtimeline/add-mongodb-and-postgresql-in-django-using-docker-55j6
-https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e
-https://medium.com/@audretschjames/understanding-docker-as-if-it-were-a-gameboy-96c96392efbf
-```
-
 # Docker Basic Concepts
 ## 1. Docker Architecture
 ### Components
@@ -262,4 +254,10 @@ $ docker run -it -v $(pwd):/mounted ubuntu:14.04 /bin/bash
 
 ----------------------------------------------------------------
 
-	Kubernets: open source container orchestration tool.
+```
+https://dev.to/thedevtimeline/add-mongodb-and-postgresql-in-django-using-docker-55j6
+https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e
+https://medium.com/@audretschjames/understanding-docker-as-if-it-were-a-gameboy-96c96392efbf
+```
+
+Kubernets: open source container orchestration tool.
