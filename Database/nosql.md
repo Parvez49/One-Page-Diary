@@ -23,11 +23,6 @@
 - When MongoDB is a BAD choice?
   - when strong relationships, strict consistency(Order must always belong to a valid user), and complex joins are core business requirements.
 
-### Elasticsearch
-- is a distributed search & analytics engine.
-- optimized for fast text search & aggregation
-- 
-
 
 ## Export Docker Mongo Database
 ```commandline
