@@ -1,43 +1,210 @@
-# TMUX Cheat Sheet
+# tmux — Terminal Multiplexer
 
-`tmux` is a terminal multiplexer that allows to manage multiple terminal windows and panes from a single terminal session. It is especially useful for running multiple tasks simultaneously or keeping long-running processes active.
+> Backgrounding processes: **[process.md](process.md)** · SSH sessions: **[gitssh.md](gitssh.md)**
 
 ---
 
-### Session Management
-  Sessions are independent tmux environments. You can have multiple sessions running.
-- ```$ tmux new-session -s session_name```  // Create a new session
-- ```$ tmux rename-session -t old_name new_name```  // Rename
-- ```$ tmux ls```  // List all sessions
-- ```$ tmux attach -t session_name```  // Attach to an existing session
-- ```$ Ctrl-b d``` Detach from a session
-- ```$ tmux kill-session -t session_name``` // Kill session
+## 1. Why it matters
 
+tmux keeps a shell session alive **on the server, independent of your connection**. The
+session lives in a daemon; your terminal merely attaches to it.
 
-## 🔹 Pane Management
+⭐ **The senior argument:** any long-running operation over SSH — a migration, a `rsync` of
+100 GB, a build, a `kubectl` rollout — dies with the connection if you run it bare. Wi-Fi
+drop, laptop sleep, VPN reconnect: the process gets `SIGHUP` and your half-applied migration
+is now an incident. Start it inside tmux and you can reattach from anywhere and find it
+running.
 
-Panes are sub-divisions of a tmux window. You can split a window into multiple panes.
+`nohup`/`&` (see [process.md §4](process.md)) also survive logout, but you can't *interact*
+with them afterwards — no output, no prompt, no Ctrl-C. tmux gives you the session back.
 
-- **Create a vertical (left/right) split:** Ctrl-b %
-- **Create a horizontal (top/bottom) split:** Ctrl-b "
-- Navigate between panes:
-  ```
-    Ctrl-b ←  # Move to the left pane
-    Ctrl-b →  # Move to the right pane
-    Ctrl-b ↑  # Move to the upper pane
-    Ctrl-b ↓  # Move to the lower pane
-  ```
-- Resize panes: Hold Ctrl-b and then press Ctrl + arrow keys to resize panes (depends on tmux version).
+**Hierarchy:**
 
-### copy mode
- Copy mode allows scrolling through output or copying text inside tmux. 
-- Enter copy mode: ctrl-b [
-- Move cursor: Up/Down arrows, PageUp/PageDown(Scroll faster)
-- Exit copy mode: q
-- Paste copied text: Ctrl-b ]
+```
+session            (a workspace — persists on the server)
+└── window         (a tab)
+    └── pane       (a split — each is its own shell)
+```
 
-### Window Management
- Windows are like tabs in your tmux session. Each window can have multiple panes.
-- Create a new window: Ctrl-b c
-- Switch between windows: Ctrl-b 0, Ctrl-b 1
-- close a window: exit
+---
+
+## 2. Sessions
+
+```bash
+tmux                                # unnamed session
+tmux new -s deploy                  # ⭐ named — do this, "0" tells you nothing
+tmux ls                             # list sessions
+tmux attach -t deploy               # ⭐ reattach  (tmux a -t deploy)
+tmux new -As deploy                 # ⭐ attach if it exists, else create — the safe one-liner
+tmux kill-session -t deploy
+tmux kill-server                    # ⚠️ everything
+tmux rename-session -t old new
+```
+
+⭐ **`tmux new -As name`** is the command to muscle-memorise: it never accidentally nests a
+second session, and never errors because one already exists.
+
+⚠️ **`sessions should be nested with care` / `no sessions`** — you're already *inside* tmux.
+Detach first (`Ctrl-b d`), or use `Ctrl-b s` to switch.
+
+---
+
+## 3. The prefix
+
+**Every tmux keystroke starts with the prefix — `Ctrl-b` by default.** Notation `Ctrl-b d`
+means: press `Ctrl-b`, release, then press `d`.
+
+| Key | Action |
+|---|---|
+| **`Ctrl-b d`** | ⭐ **detach** — the session keeps running |
+| `Ctrl-b s` | interactive **session** list |
+| `Ctrl-b $` | rename session |
+| `Ctrl-b ?` | list every binding |
+| `Ctrl-b :` | command prompt |
+
+---
+
+## 4. Windows (tabs)
+
+| Key | Action |
+|---|---|
+| `Ctrl-b c` | **create** window |
+| `Ctrl-b ,` | rename window |
+| `Ctrl-b n` / `p` | next / previous |
+| `Ctrl-b 0…9` | jump to window N |
+| `Ctrl-b w` | ⭐ visual window list |
+| `Ctrl-b &` | kill window |
+| `Ctrl-b l` | last window (toggle) |
+
+---
+
+## 5. Panes (splits)
+
+| Key | Action |
+|---|---|
+| `Ctrl-b %` | split **vertical** (left/right) |
+| `Ctrl-b "` | split **horizontal** (top/bottom) |
+| `Ctrl-b ←↑↓→` | move between panes |
+| `Ctrl-b o` | cycle panes |
+| `Ctrl-b q` | show pane numbers (then press one) |
+| `Ctrl-b z` | ⭐ **zoom** — fullscreen this pane, press again to restore |
+| `Ctrl-b x` | kill pane |
+| `Ctrl-b {` / `}` | swap pane left / right |
+| `Ctrl-b space` | cycle layouts |
+| `Ctrl-b Ctrl-←↑↓→` | resize |
+| `Ctrl-b !` | ⭐ break pane out into its own window |
+
+⭐ **`Ctrl-b z` is the most underused binding** — instant fullscreen for reading a log or
+stack trace in a cramped 4-pane layout, no layout surgery needed.
+
+⚠️ **`%` is vertical and `"` is horizontal** — the opposite of most people's intuition
+(the symbols depict the *divider*, not the direction of the split).
+
+---
+
+## 6. Copy mode ⭐
+
+Scrolling back requires copy mode — the mouse scrollwheel won't work by default.
+
+| Key | Action |
+|---|---|
+| `Ctrl-b [` | **enter copy mode** |
+| `↑↓` / `PgUp` `PgDn` | scroll |
+| `Ctrl-b ]` | paste |
+| `q` | exit |
+| `/` then text | ⭐ search **forward**, `n` for next |
+| `?` then text | search backward |
+| `g` / `G` | top / bottom of scrollback |
+
+**Selecting (vi mode):** `space` starts the selection, `Enter` copies.
+(emacs mode: `Ctrl-space` then `Alt-w`.)
+
+```bash
+tmux capture-pane -pS -10000 > scrollback.log    # ⭐ dump scrollback to a file
+```
+
+---
+
+## 7. Configuration — `~/.tmux.conf`
+
+```tmux
+# Ctrl-a is far easier to reach than Ctrl-b (matches screen)
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+set -g mouse on                 # ⭐ scroll, click panes, drag borders
+set -g history-limit 50000      # ⭐ default 2000 is far too small for logs
+set -g base-index 1             # windows start at 1 — matches the keyboard
+setw -g pane-base-index 1
+set -g renumber-windows on
+set -sg escape-time 0           # ⭐ removes vim's ESC lag inside tmux
+setw -g mode-keys vi
+
+# splits that keep the current directory (and are memorable)
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# reload config without restarting
+bind r source-file ~/.tmux.conf \; display "reloaded"
+
+set -g status-right '#[fg=green]#H #[fg=yellow]%H:%M'
+```
+
+```bash
+tmux source-file ~/.tmux.conf     # apply without killing sessions
+```
+
+⭐ `history-limit` and `escape-time 0` are the two settings that make the biggest daily
+difference.
+
+---
+
+## 8. Practical patterns
+
+**Long deploy over SSH — the whole point:**
+
+```bash
+ssh prod
+tmux new -As deploy
+./migrate.sh                # now safe: Ctrl-b d, close the laptop, reattach later
+```
+
+**Send a command to every pane** (rolling restart across servers):
+
+```bash
+tmux setw synchronize-panes on     # ⭐ type once, executes everywhere
+tmux setw synchronize-panes off    # ⚠️ REMEMBER to turn it off
+```
+
+**Scripted layout:**
+
+```bash
+tmux new -s dev -d              # detached
+tmux send-keys -t dev 'cd ~/app && ./manage.py runserver' Enter
+tmux split-window -t dev
+tmux send-keys -t dev 'tail -F logs/app.log' Enter
+tmux attach -t dev
+```
+
+**tmux vs screen vs nohup:**
+
+| | `nohup`/`&` | `screen` | **`tmux`** |
+|---|---|---|---|
+| Survives disconnect | ✅ | ✅ | ✅ |
+| Reattach & interact | ❌ | ✅ | ✅ |
+| Panes/splits | ❌ | limited | ✅ |
+| Scriptable | ❌ | limited | ⭐ ✅ |
+
+---
+
+## 9. Interview points
+
+- **Why use tmux on a server?** A dropped SSH connection sends `SIGHUP` and kills the job;
+  tmux runs it in a session owned by a daemon, so it survives and stays interactive.
+- **tmux vs `nohup`?** Both survive logout, but `nohup` gives up interactivity — no input, no
+  live output, no way to intervene.
+- **Session vs window vs pane?** Workspace → tab → split, in that order.
+- **How do you scroll back?** Copy mode (`Ctrl-b [`), or enable `set -g mouse on`.
+- **How do you leave a session running?** Detach with `Ctrl-b d` — *not* `exit`, which kills
+  the shell.
