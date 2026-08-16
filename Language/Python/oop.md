@@ -117,7 +117,7 @@ can't be shadowed by an instance attribute ([data_model.md §5](data_model.md)).
 
 ---
 
-## 3. Inheritance & MRO ⭐⭐
+## 3. Inheritance & MRO(Method Resolution Order) ⭐⭐
 
 ```python
 class Animal:
