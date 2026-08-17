@@ -1,5 +1,8 @@
 # Transactional email in production
 
+> DNS records go in alongside the A-record: **[tls_certbot.md](tls_certbot.md)** ·
+> Sending asynchronously (never in the request cycle): `../Web/Django/async_tasks.md`
+
 > Note to self: env-based SMTP config is NOT the whole story. The config is standard;
 > the constraint I didn't know about is **who is on the other end of that SMTP connection**.
 
@@ -84,3 +87,36 @@ rejected or spam-foldered regardless of provider.
 Flows that silently break without a working provider: email verification before
 login, password reset, invite/notification emails. Local dev hides this (console
 email backend prints to stdout) — the gap only shows on the first real deployment.
+
+## Sending it correctly ⭐
+
+⚠️ **Never send email inside the request/response cycle.** SMTP is a network call to a third
+party; a slow or down provider turns a 200ms signup into a 30-second timeout and holds an
+application worker the whole time ([app_servers.md](app_servers.md)). Queue it —
+`send_mail` goes in a Celery task, enqueued inside `transaction.on_commit` so the task can't
+run before the user row is committed (`../Web/Django/async_tasks.md`).
+
+⚠️ Email delivery is **at-least-once and unverifiable**: the provider accepting a message is
+not the recipient receiving it. Handle bounce/complaint webhooks, make the task idempotent
+(a retry must not send a second "reset your password" with a fresh token), and never treat a
+send as a state transition.
+
+---
+
+## Interview points
+
+- **Why not self-host postfix?** ⚠️ IP reputation. VPS ranges are distrusted by Gmail/Outlook,
+  and you inherit SPF/DKIM/DMARC plus reputation maintenance forever.
+- **Why not Gmail SMTP in production?** ⭐ ~500/day cap, no bounce webhooks, silent account
+  revocation, and a `From:` that doesn't match the authenticated account looks like spoofing.
+- **What are SPF, DKIM and DMARC?** ⭐ SPF authorises sending IPs, DKIM signs the message,
+  DMARC tells receivers what to do when either fails — and where to report. Without them,
+  mail is spam-foldered or rejected regardless of provider.
+- **Why is provider config in env vars?** ⭐ Swapping providers becomes 4 value edits and zero
+  code changes.
+- **Where does the send happen?** ⚠️ In a background task, not the request — and enqueued via
+  `on_commit`.
+- **What does "sent" mean?** ⚠️ Only that the provider accepted it. Delivery is observed via
+  bounce/complaint webhooks.
+- **SES sandbox** — new accounts can only send to pre-verified addresses until you request
+  production access. Plan for the lead time before a demo.
