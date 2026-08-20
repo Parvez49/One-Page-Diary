@@ -23,7 +23,7 @@ with them afterwards — no output, no prompt, no Ctrl-C. tmux gives you the ses
 ```
 session            (a workspace — persists on the server)
 └── window         (a tab)
-    └── pane       (a split — each is its own shell)
+    └── pane       (a split — each is its own sh****ell)
 ```
 
 ---
@@ -39,10 +39,26 @@ tmux new -As deploy                 # ⭐ attach if it exists, else create — t
 tmux kill-session -t deploy
 tmux kill-server                    # ⚠️ everything
 tmux rename-session -t old new
+tmux has-session -t deploy 2>/dev/null && echo exists    # scriptable guard
 ```
 
 ⭐ **`tmux new -As name`** is the command to muscle-memorise: it never accidentally nests a
 second session, and never errors because one already exists.
+
+⚠️ **`command attach-session: unknown flag -s`** — `-s` and `-t` are not interchangeable:
+
+| | flag | meaning |
+|---|---|---|
+| `tmux new -s deploy` | `-s` | **s**ets the name, at creation only |
+| `tmux attach -t deploy` | `-t` | **t**argets an existing session |
+
+Every command that acts on something that already exists takes `-t` (`attach`, `kill-session`,
+`rename-session -t old new`, `send-keys -t`, `switch-client -t`). `new -As` reads as `-A -s`,
+which is why that one keeps `-s`.
+
+⚠️ **Sessions do not survive a reboot** — the daemon dies with the machine. tmux protects you
+from a dropped *connection*, not from a restart. To persist layouts across reboots you need
+the `tmux-resurrect` + `tmux-continuum` plugins (via TPM); nothing built in does it.
 
 ⚠️ **`sessions should be nested with care` / `no sessions`** — you're already *inside* tmux.
 Detach first (`Ctrl-b d`), or use `Ctrl-b s` to switch.
@@ -58,9 +74,26 @@ means: press `Ctrl-b`, release, then press `d`.
 |---|---|
 | **`Ctrl-b d`** | ⭐ **detach** — the session keeps running |
 | `Ctrl-b s` | interactive **session** list |
+| `Ctrl-b (` / `)` | previous / next session (no menu) |
 | `Ctrl-b $` | rename session |
 | `Ctrl-b ?` | list every binding |
 | `Ctrl-b :` | command prompt |
+
+### Getting out of the interactive lists ⭐
+
+`Ctrl-b s`, `Ctrl-b w` and `Ctrl-b ?` all open a **mode**, not a screen you're stuck in —
+the shell underneath is still alive, it just isn't listening to you yet.
+
+| Key | Action |
+|---|---|
+| **`q`** or **`Esc`** | ⭐ **close the list**, back to your pane |
+| `↑` `↓` | move |
+| `Enter` | switch to the highlighted session/window |
+| `x` | kill the highlighted entry (asks to confirm) |
+| `/` | filter by name |
+
+⚠️ Don't reach for `Ctrl-c` or close the terminal — the first does nothing useful here and
+the second just detaches you from a session you were already attached to.
 
 ---
 
@@ -158,6 +191,15 @@ tmux source-file ~/.tmux.conf     # apply without killing sessions
 ⭐ `history-limit` and `escape-time 0` are the two settings that make the biggest daily
 difference.
 
+⚠️ **`mouse on` steals text selection** — once tmux owns the mouse, dragging selects into
+*tmux's* copy buffer, not your terminal's clipboard. Hold **`Shift`** while dragging to
+bypass tmux and use the terminal's own selection (and `Shift`+middle-click to paste).
+
+⚠️ **Nested tmux** (local tmux → `ssh` → remote tmux): the prefix hits the *outer* session
+first. Press the prefix **twice** to send it inward — `Ctrl-b Ctrl-b d` detaches the remote
+one. Simplest fix is a different prefix on each side (e.g. `Ctrl-a` locally, `Ctrl-b`
+remotely) so there's nothing to disambiguate.
+
 ---
 
 ## 8. Practical patterns
@@ -207,4 +249,9 @@ tmux attach -t dev
 - **Session vs window vs pane?** Workspace → tab → split, in that order.
 - **How do you scroll back?** Copy mode (`Ctrl-b [`), or enable `set -g mouse on`.
 - **How do you leave a session running?** Detach with `Ctrl-b d` — *not* `exit`, which kills
-  the shell.
+  the shell. (A session ends on its own once its last window exits.)
+- **Does a tmux session survive a reboot?** No — it's a daemon on that host. It covers dropped
+  connections, not restarts; `tmux-resurrect`/`continuum` are what restore layouts after one.
+- **How would you script a dev environment?** `new -d` + `send-keys -t` + `split-window`, then
+  `attach` — the same commands you'd use interactively, which is why tmux beats `screen` for
+  automation.
