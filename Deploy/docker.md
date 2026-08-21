@@ -81,6 +81,28 @@ COPY --from=build /app/dist /usr/share/nginx/html
 directory is sent to the daemon as build context — slow builds, bloated images, and ⚠️ `.env`
 baked into the image.
 
+⭐ **`target:` picks a stage** from a multi-stage Dockerfile — build one image for dev, another
+for prod, from the same file:
+
+```dockerfile
+FROM base AS dev
+CMD ["uvicorn", "app:app", "--reload"]
+
+FROM base AS prod
+CMD ["uvicorn", "app:app"]
+```
+
+```yaml
+build:
+  context: .
+  target: dev   # stops after the `dev` stage; `prod` stage is never built
+```
+
+⚠️ **Build-time network issues** — `RUN pip install` / `npm ci` failing or hanging mid-download
+during `docker build` is usually a networking problem in the *build* sandbox, not your app. Try
+`build: { network: host }` to make build steps use the host's network stack directly (fixes
+MTU mismatches and DNS oddities some hosts hit).
+
 ---
 
 ## 4. Dockerfile instructions
@@ -170,6 +192,17 @@ docker-compose down -v          # ⚠️⚠️ -v DELETES the volumes — i.e. y
 ⚠️ **A database in a container without a volume loses everything on `docker rm`.** Standard
 first-week Docker incident.
 
+⭐ **Anonymous volume to protect a subpath from a bind mount** — mounting your whole project
+for live-reload also mounts your host's `node_modules`/`.venv` over the container's, which was
+built for the container's OS and won't work. Add a second mount with no host side to "shield"
+just that folder:
+
+```yaml
+volumes:
+  - .:/app          # live code reload
+  - /app/.venv       # anonymous volume — keeps the container's own .venv, host's is ignored
+```
+
 ---
 
 ## 8. Compose
@@ -208,6 +241,20 @@ volumes:
 | `volumes` | bind mounts or named volumes |
 | `environment` / `env_file` | env vars for the container |
 | `depends_on` | ⚠️ start **order** only, not readiness — add a healthcheck |
+
+⭐ **Healthcheck fields:**
+
+```yaml
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+  interval: 10s       # check every 10s
+  timeout: 3s         # a check must finish within 3s or counts as failed
+  retries: 5           # 5 consecutive failures → marked unhealthy
+  start_period: 15s   # ⭐ failures in this window don't count — grace period while booting
+```
+
+`start_period` doesn't delay anything — checks still run from the start. It just means an
+app that's slow to boot isn't punished for failing checks in its first 15s.
 
 ⚠️⚠️ **`depends_on` does not wait for the service to be ready**, only started. Postgres accepts
 connections seconds after the process starts; your app crashes on boot in that gap. Fix with
