@@ -139,6 +139,16 @@ hard for UI, exploratory work and spikes; **tests coupled to implementation** be
 tax — every refactor breaks 40 tests; requires genuine discipline, so teams often abandon it
 under deadline pressure.
 
+> ⚠️ **"Having tests" ≠ "doing TDD".** `test_*.py` is just pytest's file-naming convention —
+> it says nothing about *when* the tests were written. The distinction interviewers care about:
+> - **"We have tests"** — feature first, tests added after. This is what most teams actually do;
+>   it's fine and valuable.
+> - **"We do TDD"** — the test is written **first** and drives the design.
+>
+> Don't claim TDD on a CV unless you actually work that way — interviewers probe it
+> ("walk me through your red-green-refactor cycle"). What they really filter for is the broader
+> thing: a pytest suite, meaningful coverage, tests enforced in CI so a red PR can't merge.
+
 ### BDD — Behaviour-Driven Development
 TDD expressed in **business language** so non-developers can read and write specs (Cucumber, `pytest-bdd`).
 
